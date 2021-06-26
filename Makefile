@@ -14,7 +14,7 @@ test:
 compile: clean
 	@echo "==> Go Building API"
 	@env GOOS=${OS} GOARCH=amd64 go build -v -o  build/${NAME_API} \
-	-ldflags "-X main.BuildGitCommit=$(GIT_COMMIT) -X main.BuildTime=$(GIT_BUILD_TIME)" cmd/api
+	-ldflags "-X main.BuildGitCommit=$(GIT_COMMIT) -X main.BuildTime=$(GIT_BUILD_TIME)" ./cmd/api/
 
 
 .PHONY: clean
