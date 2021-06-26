@@ -1,0 +1,30 @@
+run:
+  deadline: 30m
+  tests: true
+
+linters-settings:
+  govet:
+    check-shadowing: false
+  gofmt:
+    simplify: true
+  maligned:
+    suggest-new: true
+  exhaustive:
+    check-generated: false
+    default-signifies-exhaustive: true
+  
+    
+linters:
+  enable:
+    - goimports
+    - gofmt
+    - bodyclose
+    - goconst
+    - prealloc
+    - rowserrcheck
+    - gosec
+    - exhaustive
+  disable:
+    - misspell
+    - maligned
+    - errcheck
