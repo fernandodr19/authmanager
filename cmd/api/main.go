@@ -10,6 +10,7 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/api"
 	"github.com/fernandodr19/library/pkg/instrumentation"
 	"github.com/jackc/pgx/v4/pgxpool"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 // @title Swagger library API
