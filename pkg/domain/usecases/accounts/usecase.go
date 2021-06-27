@@ -1,12 +1,14 @@
 package accounts
 
 import (
+	"context"
+
 	"github.com/fernandodr19/authenticator/pkg/domain/entities/accounts"
 )
 
 // Maybe move interface for where it is gonna be used
 type Usecase interface {
-	DoSomething()
+	DoSomething(context.Context) error
 }
 
 var _ Usecase = &AccountsUsecase{}
@@ -21,4 +23,6 @@ func NewAccountsUsecase(accRepo accounts.Repository) *AccountsUsecase {
 	}
 }
 
-func (a AccountsUsecase) DoSomething() {}
+func (a AccountsUsecase) DoSomething(ctx context.Context) error {
+	return ErrNotImplemented
+}

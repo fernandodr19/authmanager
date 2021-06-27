@@ -1,1 +1,26 @@
-package account
+package accounts
+
+import (
+	"net/http"
+
+	"github.com/fernandodr19/authenticator/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authenticator/pkg/gateway/api/middleware"
+
+	"github.com/gorilla/mux"
+)
+
+type Handler struct {
+	Usecase accounts.Usecase
+}
+
+func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase) *Handler {
+	h := &Handler{
+		Usecase: usecase,
+	}
+
+	public.HandleFunc("/check",
+		middleware.Handle(h.DoSomething)).
+		Methods(http.MethodGet)
+
+	return h
+}

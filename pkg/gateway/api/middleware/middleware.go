@@ -4,6 +4,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/fernandodr19/authenticator/pkg/gateway/api/responses"
+	"github.com/fernandodr19/authenticator/pkg/instrumentation"
+	"github.com/google/uuid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
@@ -17,16 +20,40 @@ func Cors(r *mux.Router) http.Handler {
 }
 
 // Removes the trailing slash from request, except if it is the root url.
-// If the url is https://stone.com.br/api or https://stone.com.br/api/
+// If the url is https://www.google.com/api or https://www.google.com/api/
 // both will match.
 // This was done as gorilla mux default method for this doesn't support POST requests: https://github.com/gorilla/mux/issues/30
-// Usage:
-// n := negroni.Classic()
-// n.UseFunc(middleware.TrimSlashSuffix)
 func TrimSlashSuffix(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	if r.URL.Path != "/" {
 		r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
 	}
 
 	next.ServeHTTP(w, r)
+}
+
+// Handle middleware function to treat rest responses.
+func Handle(handler func(r *http.Request) responses.Response) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		logger := instrumentation.Logger()
+
+		response := handler(r)
+		if response.Error != nil {
+			err := response.Error
+			logger.Error(err)
+		}
+
+		// Setting headers
+		for key, value := range response.Headers() {
+			w.Header().Set(key, value)
+		}
+
+		if w.Header().Get("x-req-id") == "" {
+			w.Header().Set("x-req-id", uuid.NewString())
+		}
+
+		err := responses.SendJSON(w, response.Payload, response.Status)
+		if err != nil {
+			logger.Error(err)
+		}
+	}
 }

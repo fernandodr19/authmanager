@@ -32,10 +32,7 @@ func main() {
 		logger.WithError(err).Fatal("failed building app")
 	}
 
-	// pass app to api
-	app.Accounts.DoSomething()
-
-	apiHandler, err := api.BuildHandler(cfg)
+	apiHandler, err := api.BuildHandler(app, cfg)
 	if err != nil {
 		logger.WithError(err).Fatal("Could not initalize api")
 	}
