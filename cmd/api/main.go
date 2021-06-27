@@ -5,9 +5,11 @@ import (
 	"time"
 
 	_ "github.com/fernandodr19/authenticator/docs/swagger"
+	authenticator "github.com/fernandodr19/authenticator/pkg"
 	"github.com/fernandodr19/authenticator/pkg/config"
 	"github.com/fernandodr19/authenticator/pkg/gateway/api"
 	"github.com/fernandodr19/authenticator/pkg/instrumentation"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,16 +23,24 @@ func main() {
 
 	cfg, err := config.Load()
 	if err != nil {
-		logger.WithError(err).Fatal("Could not load config")
+		logger.WithError(err).Fatal("failed loading config")
 	}
 
-	app, err := api.BuildHandler(cfg)
+	// init postgres
+	app, err := authenticator.BuildApp(&pgxpool.Pool{}, cfg)
+	if err != nil {
+		logger.WithError(err).Fatal("failed building app")
+	}
+
+	// pass app to api
+	app.Accounts.DoSomething()
+
+	apiHandler, err := api.BuildHandler(cfg)
 	if err != nil {
 		logger.WithError(err).Fatal("Could not initalize api")
 	}
 
-	serveApp(app, cfg)
-
+	serveApp(apiHandler, cfg)
 }
 
 func serveApp(apiHandler http.Handler, cfg *config.Config) {
