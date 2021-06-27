@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fernandodr19/authenticator/pkg/gateway/api/responses"
-	"github.com/fernandodr19/authenticator/pkg/instrumentation"
+	"github.com/fernandodr19/library/pkg/gateway/api/responses"
+	"github.com/fernandodr19/library/pkg/instrumentation"
 	"github.com/google/uuid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"

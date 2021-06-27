@@ -3,8 +3,8 @@ package accounts
 import (
 	"net/http"
 
-	"github.com/fernandodr19/authenticator/pkg/domain/usecases/accounts"
-	"github.com/fernandodr19/authenticator/pkg/gateway/api/middleware"
+	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
 
 	"github.com/gorilla/mux"
 )

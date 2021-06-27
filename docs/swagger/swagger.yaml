@@ -1,8 +1,8 @@
 info:
   contact: {}
-  description: Documentation Auth API
+  description: Documentation Library API
   license: {}
-  title: Swagger Authenticator API
+  title: Swagger library API
   version: "1.0"
 paths: {}
 swagger: "2.0"

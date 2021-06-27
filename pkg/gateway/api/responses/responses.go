@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/fernandodr19/authenticator/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 )
 
 type Response struct {

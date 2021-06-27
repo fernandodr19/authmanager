@@ -1,4 +1,4 @@
-NAME_API=auth-api
+NAME_API=library-api
 VERSION=dev
 OS ?= linux
 GIT_COMMIT=$(shell git rev-parse HEAD)

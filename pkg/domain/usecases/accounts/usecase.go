@@ -3,7 +3,7 @@ package accounts
 import (
 	"context"
 
-	"github.com/fernandodr19/authenticator/pkg/domain/entities/accounts"
+	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 )
 
 // Maybe move interface for where it is gonna be used

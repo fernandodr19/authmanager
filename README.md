@@ -1,5 +1,5 @@
-# authenticator
-Sample application that let's you create an account and hit authenticated routes.
+# library
+Simple application for books management
 
 ### Swagger
-API docs can be found at [localhost:3000/docs/v1/authenticator/swagger/index.html](localhost:3000/docs/v1/authenticator/swagger/index.html).
+API docs can be found at [localhost:3000/docs/v1/library/swagger/index.html](localhost:3000/docs/v1/library/swagger/index.html).

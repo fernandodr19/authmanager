@@ -3,9 +3,9 @@ package accounts
 import (
 	"net/http"
 
-	"github.com/fernandodr19/authenticator/pkg/domain"
-	"github.com/fernandodr19/authenticator/pkg/gateway/api/responses"
-	"github.com/fernandodr19/authenticator/pkg/instrumentation"
+	"github.com/fernandodr19/library/pkg/domain"
+	"github.com/fernandodr19/library/pkg/gateway/api/responses"
+	"github.com/fernandodr19/library/pkg/instrumentation"
 )
 
 func (h Handler) DoSomething(r *http.Request) responses.Response {

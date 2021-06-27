@@ -8,7 +8,7 @@ import (
 
 // Config defines the service configuration
 type Config struct {
-	AppName string `envconfig:"APP_NAME" default:"authenticator"`
+	AppName string `envconfig:"APP_NAME" default:"library"`
 	API     APIConfig
 }
 

@@ -42,8 +42,8 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "Swagger Authenticator API",
-	Description: "Documentation Auth API",
+	Title:       "Swagger library API",
+	Description: "Documentation Library API",
 }
 
 type s struct{}
