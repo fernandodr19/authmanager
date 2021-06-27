@@ -1,4 +1,4 @@
-# [API bare bones](#api-bate-bones)
+# API bare bones
 Short answer: Useless API.
 
 Long answer: Well designed over engineered barebones of ANY server side application. It was designed following DDD and clean arch principles protecting its domain logic from everything else. Don't get to much attached to the choice of frameworks and drivers because that's now really the point. They could be easily replaced by any other without having to change a single domain line. (Note that the short answers remains true rs)
