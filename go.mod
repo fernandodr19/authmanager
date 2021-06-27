@@ -16,7 +16,7 @@ require (
 	github.com/matttproud/golang_protobuf_extensions v1.0.2-0.20181231171920-c182affec369 // indirect
 	github.com/prometheus/client_golang v1.11.0
 	github.com/sirupsen/logrus v1.8.1
-	github.com/stretchr/testify v1.7.0 // indirect
+	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/http-swagger v1.0.0
 	github.com/swaggo/swag v1.7.0
 	github.com/urfave/negroni v1.0.0

@@ -18,7 +18,7 @@ func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase)
 		Usecase: usecase,
 	}
 
-	public.HandleFunc("/check",
+	public.HandleFunc("/do-something",
 		middleware.Handle(h.DoSomething)).
 		Methods(http.MethodGet)
 

@@ -1,8 +1,41 @@
+definitions:
+  accounts.SomethingResponse:
+    properties:
+      something_id:
+        type: string
+    type: object
 info:
   contact: {}
   description: Documentation Library API
   license: {}
   title: Swagger library API
   version: "1.0"
-paths: {}
+paths:
+  /do-something:
+    get:
+      consumes:
+      - application/json
+      description: Does something incredible.
+      parameters:
+      - description: Bearer Authorization Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: X-Request-Id
+              type: string
+          schema:
+            $ref: '#/definitions/accounts.SomethingResponse'
+        "500":
+          description: Internal server error
+      summary: Does something
+      tags:
+      - Something
 swagger: "2.0"

@@ -24,7 +24,59 @@ var doc = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/do-something": {
+            "get": {
+                "description": "Does something incredible.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Something"
+                ],
+                "summary": "Does something",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Authorization Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/accounts.SomethingResponse"
+                        },
+                        "headers": {
+                            "Token": {
+                                "type": "string",
+                                "description": "X-Request-Id"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "accounts.SomethingResponse": {
+            "type": "object",
+            "properties": {
+                "something_id": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }`
 
 type swaggerInfo struct {

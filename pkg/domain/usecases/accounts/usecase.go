@@ -6,7 +6,8 @@ import (
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 )
 
-// Maybe move interface for where it is gonna be used
+//go:generate moq -skip-ensure -stub -out mocks.gen.go . Usecase:AccountsMockUsecase
+
 type Usecase interface {
 	DoSomething(context.Context) error
 }
@@ -24,5 +25,5 @@ func NewAccountsUsecase(accRepo accounts.Repository) *AccountsUsecase {
 }
 
 func (a AccountsUsecase) DoSomething(ctx context.Context) error {
-	return ErrNotImplemented
+	return nil
 }
