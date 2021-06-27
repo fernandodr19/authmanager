@@ -20,17 +20,22 @@ func main() {
 	logger := instrumentation.Logger()
 	logger.Infof("Build info: time[%s] git_hash[%s]", BuildTime, BuildGitCommit)
 
+	// Load config
 	cfg, err := config.Load()
 	if err != nil {
 		logger.WithError(err).Fatal("failed loading config")
 	}
 
-	// init postgres
-	app, err := library.BuildApp(&pgxpool.Pool{}, cfg)
+	// Init postgres
+	pgConn := &pgxpool.Pool{}
+
+	// Build app
+	app, err := library.BuildApp(pgConn, cfg)
 	if err != nil {
 		logger.WithError(err).Fatal("failed building app")
 	}
 
+	// Build API handler
 	apiHandler, err := api.BuildHandler(app, cfg)
 	if err != nil {
 		logger.WithError(err).Fatal("Could not initalize api")
