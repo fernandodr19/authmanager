@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
+	"github.com/fernandodr19/library/pkg/gateway/api/shared"
 	"github.com/fernandodr19/library/pkg/instrumentation"
 	"github.com/google/uuid"
 	"github.com/gorilla/handlers"
@@ -47,8 +48,8 @@ func Handle(handler func(r *http.Request) responses.Response) http.HandlerFunc {
 			w.Header().Set(key, value)
 		}
 
-		if w.Header().Get("x-req-id") == "" {
-			w.Header().Set("x-req-id", uuid.NewString())
+		if w.Header().Get(shared.XReqID) == "" {
+			w.Header().Set(shared.XReqID, uuid.NewString())
 		}
 
 		err := responses.SendJSON(w, response.Payload, response.Status)

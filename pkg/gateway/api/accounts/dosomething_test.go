@@ -12,6 +12,7 @@ import (
 
 	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
+	"github.com/fernandodr19/library/pkg/gateway/api/shared"
 )
 
 const JSONContentType = "application/json"
@@ -38,6 +39,7 @@ func TestHandler_Create(t *testing.T) {
 
 		//assert
 		assert.Equal(t, http.StatusOK, response.Code)
+		assert.NotEmpty(t, response.Header().Get(shared.XReqID))
 		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
 	})
 
@@ -53,6 +55,7 @@ func TestHandler_Create(t *testing.T) {
 
 		//assert
 		assert.Equal(t, http.StatusNotImplemented, response.Code)
+		assert.NotEmpty(t, response.Header().Get(shared.XReqID))
 		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
 	})
 }
