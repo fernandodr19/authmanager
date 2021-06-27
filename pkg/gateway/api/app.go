@@ -7,6 +7,7 @@ import (
 	"github.com/fernandodr19/authenticator/pkg/gateway/api/middleware"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	http_swagger "github.com/swaggo/http-swagger"
 	"github.com/urfave/negroni"
 )
 
@@ -15,6 +16,7 @@ func BuildHandler(cfg *config.Config) (http.Handler, error) {
 
 	r.PathPrefix("/metrics").Handler(promhttp.Handler()).Methods(http.MethodGet)
 	r.PathPrefix("/healthcheck").HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) }).Methods(http.MethodGet)
+	r.PathPrefix("/docs/v1/authenticator/swagger").Handler(http_swagger.WrapHandler).Methods(http.MethodGet)
 
 	recovery := negroni.NewRecovery()
 	recovery.PrintStack = false
