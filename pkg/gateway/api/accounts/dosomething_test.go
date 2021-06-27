@@ -17,7 +17,7 @@ import (
 
 const JSONContentType = "application/json"
 
-func TestHandler_Create(t *testing.T) {
+func TestHandler_DoSomething(t *testing.T) {
 	const (
 		routePattern = "/api/v1/do-something"
 		target       = "/api/v1/do-something"
