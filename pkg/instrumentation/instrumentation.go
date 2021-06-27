@@ -13,6 +13,12 @@ type Instrumentation struct {
 
 var instrumentation *Instrumentation
 
+func init() {
+	instrumentation = &Instrumentation{
+		Logger: logrus.NewEntry(logrus.New()),
+	}
+}
+
 func Register(instr *Instrumentation) error {
 	if instr == nil {
 		return errors.New("tried to register nil instrumentation")

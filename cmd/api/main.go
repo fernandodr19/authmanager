@@ -10,16 +10,14 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/api"
 	"github.com/fernandodr19/library/pkg/instrumentation"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/sirupsen/logrus"
 )
 
 // @title Swagger library API
 // @version 1.0
 // @description Documentation Library API
 func main() {
-	logger := logrus.New()
+	logger := instrumentation.Logger()
 	logger.Infof("Build info: time[%s] git_hash[%s]", BuildTime, BuildGitCommit)
-	instrumentation.Register(&instrumentation.Instrumentation{Logger: logrus.NewEntry(logger)})
 
 	cfg, err := config.Load()
 	if err != nil {

@@ -8,19 +8,15 @@ import (
 	"testing"
 
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
-	"github.com/fernandodr19/library/pkg/instrumentation"
 )
 
 const JSONContentType = "application/json"
 
 func TestHandler_Create(t *testing.T) {
-	instrumentation.Register(&instrumentation.Instrumentation{Logger: logrus.NewEntry(logrus.New())})
-
 	const (
 		routePattern = "/api/v1/do-something"
 		target       = "/api/v1/do-something"
