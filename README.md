@@ -1,5 +1,9 @@
 [![build status](https://img.shields.io/github/workflow/status/fernandodr19/api-barebones/Code%20Quality)](https://github.com/fernandodr19/api-barebones/actions)
 
+![fluxo de trabalho de exemplo](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![fluxo de trabalho de exemplo](https://github.com/fernandodr19/api-barebones/.github/workflows/main.yml/badge.svg)
+![fluxo de trabalho de exemplo](https://github.com/fernandodr19/api-barebones/workflows/main.yml/badge.svg)
+
 <p align="left">
   <a href="https://github.com/actions/setup-go/actions"><img alt="GitHub Actions status" src="https://github.com/actions/setup-go/workflows/build-test/badge.svg"></a>
 </p>
