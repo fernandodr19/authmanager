@@ -10,8 +10,6 @@
 
 [![codecov](https://codecov.io/gh/fernandodr19/api-barebones/branch/master/graph/badge.svg)](https://codecov.io/gh/fernandodr19/api-barebones) 
 
-[![Join the chat at https://gitter.im/fernandodr19/api-barebones](https://badges.gitter.im/fernandodr19/api-barebones.svg)](https://gitter.im/fernandodr19/api-barebones?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 # API bare bones
 Short answer: Useless API.
 

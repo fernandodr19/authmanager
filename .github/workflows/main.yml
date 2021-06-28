@@ -23,6 +23,12 @@ jobs:
 
     - name: Test
       run: export PATH=$PATH:$(go env GOPATH)/bin && make test
+    
+    - name: Run coverage
+      run: go test -race -coverprofile=coverage.txt -covermode=atomic
+
+    - name: Upload coverage to Codecov
+      run: bash <(curl -s https://codecov.io/bash)
 
   Lint:
     name: Lint job
