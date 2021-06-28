@@ -5,10 +5,12 @@
 </p>
 
 ![GitHub tag](https://img.shields.io/github/tag-date/fernandodr19/api-barebones.svg?style=popout)
-[![development status](https://img.shields.io/badge/development%20status-pre--alpha-orange.svg)](https://pypi.org/project/python-clean-architecture/)
-[![supports](https://img.shields.io/pypi/pyversions/python-clean-architecture)](https://github.com/fernandodr19/api-barebones/blob/master/tox.ini)
+
 [![build status](https://img.shields.io/github/workflow/status/fernandodr19/api-barebones/Code%20Quality)](https://github.com/fernandodr19/api-barebones/actions)
-[![codecov](https://codecov.io/gh/fernandodr19/api-barebones/branch/master/graph/badge.svg)](https://codecov.io/gh/fernandodr19/api-barebones) [![Join the chat at https://gitter.im/fernandodr19/api-barebones](https://badges.gitter.im/fernandodr19/api-barebones.svg)](https://gitter.im/fernandodr19/api-barebones?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![codecov](https://codecov.io/gh/fernandodr19/api-barebones/branch/master/graph/badge.svg)](https://codecov.io/gh/fernandodr19/api-barebones) 
+
+[![Join the chat at https://gitter.im/fernandodr19/api-barebones](https://badges.gitter.im/fernandodr19/api-barebones.svg)](https://gitter.im/fernandodr19/api-barebones?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # API bare bones
 Short answer: Useless API.
