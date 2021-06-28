@@ -22,8 +22,8 @@ clean:
 	@echo "==> Cleaning releases"
 	@GOOS=${OS} go clean -i -x ./...
 	@rm -f build/${NAME_API}
-	@rm coverage.html
-	@rm coverage.out
+	@rm -f coverage.html
+	@rm -f coverage.out
 
 .PHONY: metalint
 metalint:
