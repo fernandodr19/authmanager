@@ -25,5 +25,6 @@ func NewAccountsUsecase(accRepo accounts.Repository) *AccountsUsecase {
 }
 
 func (a AccountsUsecase) DoSomething(ctx context.Context) error {
+	a.AccountsRepository.SignUp(ctx)
 	return nil
 }
