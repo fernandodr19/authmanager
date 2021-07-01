@@ -7,7 +7,7 @@ import (
 
 	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
-	"github.com/fernandodr19/library/pkg/gateway/auth"
+	"github.com/fernandodr19/library/pkg/gateway/authorizer"
 
 	"github.com/gorilla/mux"
 )
@@ -21,16 +21,20 @@ func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase)
 		Usecase: usecase,
 	}
 
-	a, err := auth.New("My Secret")
+	auth, err := authorizer.New("My Secret")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(a.CreateToken("my-user", 30*time.Second))
+	fmt.Println(auth.CreateToken("my-user", 3000*time.Second))
 
 	// public.Handle("/do-something", middleware.Handle(h.DoSomething)).Methods(http.MethodGet)
 	public.Handle("/do-something",
-		a.AuthorizeRequest(middleware.Handle(h.DoSomething))).
+		middleware.Handle(h.DoSomething)).
+		Methods(http.MethodGet)
+
+	public.Handle("/do-something-auth",
+		auth.AuthorizeRequest(middleware.Handle(h.DoSomething))).
 		Methods(http.MethodGet)
 
 	return h

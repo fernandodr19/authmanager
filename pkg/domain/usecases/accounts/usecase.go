@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
+	"github.com/fernandodr19/library/pkg/instrumentation"
 )
 
 //go:generate moq -skip-ensure -stub -out mocks.gen.go . Usecase:AccountsMockUsecase
@@ -25,6 +26,7 @@ func NewAccountsUsecase(accRepo accounts.Repository) *AccountsUsecase {
 }
 
 func (a AccountsUsecase) DoSomething(ctx context.Context) error {
+	instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.TokenStr)).Info("sss")
 	a.AccountsRepository.SignUp(ctx)
 	return nil
 }
