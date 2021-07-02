@@ -44,11 +44,13 @@ func (b *BearerAuthorizer) CreateToken(userID vos.UserID, duration time.Duration
 		return "", domain.Error(operation, err)
 	}
 
+	now := time.Now()
+
 	payload := &Payload{
 		TokenID:   tokenID,
 		UserID:    userID,
-		IssuedAt:  time.Now(),
-		ExpiredAt: time.Now().Add(duration),
+		IssuedAt:  now,
+		ExpiredAt: now.Add(duration),
 	}
 
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
@@ -96,7 +98,7 @@ func (b *BearerAuthorizer) verifyToken(token string) (*Payload, error) {
 	keyFunc := func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
-			return nil, ErrInvalidToken
+			return nil, domain.Error(operation, ErrInvalidToken)
 		}
 		return b.secretKey, nil
 	}
