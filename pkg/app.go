@@ -11,10 +11,10 @@ type App struct {
 	Accounts accounts.Usecase
 }
 
-func BuildApp(dbConn *pgxpool.Pool, cfg *config.Config) (*App, error) {
+func BuildApp(dbConn *pgxpool.Pool, cfg *config.Config, tokenGenerator accounts.TokenGenerator) (*App, error) {
 	accRepo := repositories.NewAccountRepository(dbConn)
 
 	return &App{
-		Accounts: accounts.NewAccountsUsecase(accRepo),
+		Accounts: accounts.NewAccountsUsecase(accRepo, tokenGenerator),
 	}, nil
 }

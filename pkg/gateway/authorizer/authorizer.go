@@ -36,7 +36,7 @@ func (payload *Payload) Valid() error {
 	return nil
 }
 
-func (b *BearerAuthorizer) CreateToken(userID vos.UserID, duration time.Duration) (string, error) {
+func (b *BearerAuthorizer) CreateToken(userID vos.UserID, duration time.Duration) (vos.AccessToken, error) {
 	const operation = "authorizer.BearerAuthorizer.CreateToken"
 
 	tokenID, err := uuid.NewRandom()
@@ -52,7 +52,12 @@ func (b *BearerAuthorizer) CreateToken(userID vos.UserID, duration time.Duration
 	}
 
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
-	return jwtToken.SignedString(b.secretKey)
+	token, err := jwtToken.SignedString(b.secretKey)
+	if err != nil {
+		return "", domain.Error(operation, err)
+	}
+
+	return vos.AccessToken(token), nil
 }
 
 func (a *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {

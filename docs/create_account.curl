@@ -1,0 +1,6 @@
+curl -i -X POST 'localhost:3000/api/v1/signup' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "user@gmail.com",
+    "password": "U+1F680"
+}'

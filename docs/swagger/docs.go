@@ -25,9 +25,9 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/do-something": {
-            "get": {
-                "description": "Does something incredible.",
+        "/signup": {
+            "post": {
+                "description": "Creates an account for a given email.",
                 "consumes": [
                     "application/json"
                 ],
@@ -35,10 +35,19 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Something"
+                    "Accounts"
                 ],
-                "summary": "Does something",
+                "summary": "Creates an account",
                 "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/accounts.CreateAccountRequest"
+                        }
+                    },
                     {
                         "type": "string",
                         "description": "Bearer Authorization Token",
@@ -48,10 +57,10 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/accounts.SomethingResponse"
+                            "$ref": "#/definitions/accounts.CreateAccountResponse"
                         },
                         "headers": {
                             "Token": {
@@ -68,10 +77,24 @@ var doc = `{
         }
     },
     "definitions": {
-        "accounts.SomethingResponse": {
+        "accounts.CreateAccountRequest": {
             "type": "object",
             "properties": {
-                "something_id": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "accounts.CreateAccountResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
                     "type": "string"
                 }
             }

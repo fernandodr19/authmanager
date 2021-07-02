@@ -3,14 +3,17 @@ package accounts
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
 	"github.com/fernandodr19/library/pkg/gateway/api/shared"
 )
@@ -32,10 +35,13 @@ func TestHandler_DoSomething(t *testing.T) {
 		handler := createHandler(nil)
 		response := httptest.NewRecorder()
 		router := mux.NewRouter()
-		router.HandleFunc(routePattern, middleware.Handle(handler.DoSomething)).Methods(http.MethodPost)
+		router.HandleFunc(routePattern, middleware.Handle(handler.CreateAccount)).Methods(http.MethodPost)
+
+		body, err := json.Marshal(CreateAccountRequest{})
+		require.NoError(t, err)
 
 		// test
-		router.ServeHTTP(response, request(nil))
+		router.ServeHTTP(response, request(body))
 
 		//assert
 		assert.Equal(t, http.StatusOK, response.Code)
@@ -43,18 +49,18 @@ func TestHandler_DoSomething(t *testing.T) {
 		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
 	})
 
-	t.Run("should return 501", func(t *testing.T) {
+	t.Run("should return 400", func(t *testing.T) {
 		// prepare
 		handler := createHandler(accounts.ErrNotImplemented)
 		response := httptest.NewRecorder()
 		router := mux.NewRouter()
-		router.HandleFunc(routePattern, middleware.Handle(handler.DoSomething)).Methods(http.MethodPost)
+		router.HandleFunc(routePattern, middleware.Handle(handler.CreateAccount)).Methods(http.MethodPost)
 
 		// test
 		router.ServeHTTP(response, request(nil))
 
 		//assert
-		assert.Equal(t, http.StatusNotImplemented, response.Code)
+		assert.Equal(t, http.StatusBadRequest, response.Code)
 		assert.NotEmpty(t, response.Header().Get(shared.XReqID))
 		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
 	})
@@ -63,8 +69,8 @@ func TestHandler_DoSomething(t *testing.T) {
 func createHandler(err error) Handler {
 	return Handler{
 		Usecase: &accounts.AccountsMockUsecase{
-			DoSomethingFunc: func(in1 context.Context) error {
-				return err
+			CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (accounts.Tokens, error) {
+				return accounts.Tokens{}, err
 			},
 		},
 	}

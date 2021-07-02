@@ -1,7 +1,16 @@
 definitions:
-  accounts.SomethingResponse:
+  accounts.CreateAccountRequest:
     properties:
-      something_id:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  accounts.CreateAccountResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
         type: string
     type: object
 info:
@@ -11,12 +20,18 @@ info:
   title: Swagger library API
   version: "1.0"
 paths:
-  /do-something:
-    get:
+  /signup:
+    post:
       consumes:
       - application/json
-      description: Does something incredible.
+      description: Creates an account for a given email.
       parameters:
+      - description: Body
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/accounts.CreateAccountRequest'
       - description: Bearer Authorization Token
         in: header
         name: Authorization
@@ -25,17 +40,17 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           headers:
             Token:
               description: X-Request-Id
               type: string
           schema:
-            $ref: '#/definitions/accounts.SomethingResponse'
+            $ref: '#/definitions/accounts.CreateAccountResponse'
         "500":
           description: Internal server error
-      summary: Does something
+      summary: Creates an account
       tags:
-      - Something
+      - Accounts
 swagger: "2.0"

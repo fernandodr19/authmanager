@@ -5,6 +5,7 @@ package accounts
 
 import (
 	"context"
+	"github.com/fernandodr19/library/pkg/domain/vos"
 	"sync"
 )
 
@@ -14,8 +15,8 @@ import (
 //
 //         // make and configure a mocked Usecase
 //         mockedUsecase := &AccountsMockUsecase{
-//             DoSomethingFunc: func(in1 context.Context) error {
-// 	               panic("mock out the DoSomething method")
+//             CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (Tokens, error) {
+// 	               panic("mock out the CreateAccount method")
 //             },
 //         }
 //
@@ -24,50 +25,63 @@ import (
 //
 //     }
 type AccountsMockUsecase struct {
-	// DoSomethingFunc mocks the DoSomething method.
-	DoSomethingFunc func(in1 context.Context) error
+	// CreateAccountFunc mocks the CreateAccount method.
+	CreateAccountFunc func(in1 context.Context, in2 vos.Email, in3 vos.Password) (Tokens, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
-		// DoSomething holds details about calls to the DoSomething method.
-		DoSomething []struct {
+		// CreateAccount holds details about calls to the CreateAccount method.
+		CreateAccount []struct {
 			// In1 is the in1 argument value.
 			In1 context.Context
+			// In2 is the in2 argument value.
+			In2 vos.Email
+			// In3 is the in3 argument value.
+			In3 vos.Password
 		}
 	}
-	lockDoSomething sync.RWMutex
+	lockCreateAccount sync.RWMutex
 }
 
-// DoSomething calls DoSomethingFunc.
-func (mock *AccountsMockUsecase) DoSomething(in1 context.Context) error {
+// CreateAccount calls CreateAccountFunc.
+func (mock *AccountsMockUsecase) CreateAccount(in1 context.Context, in2 vos.Email, in3 vos.Password) (Tokens, error) {
 	callInfo := struct {
 		In1 context.Context
+		In2 vos.Email
+		In3 vos.Password
 	}{
 		In1: in1,
+		In2: in2,
+		In3: in3,
 	}
-	mock.lockDoSomething.Lock()
-	mock.calls.DoSomething = append(mock.calls.DoSomething, callInfo)
-	mock.lockDoSomething.Unlock()
-	if mock.DoSomethingFunc == nil {
+	mock.lockCreateAccount.Lock()
+	mock.calls.CreateAccount = append(mock.calls.CreateAccount, callInfo)
+	mock.lockCreateAccount.Unlock()
+	if mock.CreateAccountFunc == nil {
 		var (
-			out1 error
+			out1 Tokens
+			out2 error
 		)
-		return out1
+		return out1, out2
 	}
-	return mock.DoSomethingFunc(in1)
+	return mock.CreateAccountFunc(in1, in2, in3)
 }
 
-// DoSomethingCalls gets all the calls that were made to DoSomething.
+// CreateAccountCalls gets all the calls that were made to CreateAccount.
 // Check the length with:
-//     len(mockedUsecase.DoSomethingCalls())
-func (mock *AccountsMockUsecase) DoSomethingCalls() []struct {
+//     len(mockedUsecase.CreateAccountCalls())
+func (mock *AccountsMockUsecase) CreateAccountCalls() []struct {
 	In1 context.Context
+	In2 vos.Email
+	In3 vos.Password
 } {
 	var calls []struct {
 		In1 context.Context
+		In2 vos.Email
+		In3 vos.Password
 	}
-	mock.lockDoSomething.RLock()
-	calls = mock.calls.DoSomething
-	mock.lockDoSomething.RUnlock()
+	mock.lockCreateAccount.RLock()
+	calls = mock.calls.CreateAccount
+	mock.lockCreateAccount.RUnlock()
 	return calls
 }

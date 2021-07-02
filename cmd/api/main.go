@@ -8,6 +8,7 @@ import (
 	library "github.com/fernandodr19/library/pkg"
 	"github.com/fernandodr19/library/pkg/config"
 	"github.com/fernandodr19/library/pkg/gateway/api"
+	"github.com/fernandodr19/library/pkg/gateway/authorizer"
 	"github.com/fernandodr19/library/pkg/instrumentation"
 	"github.com/jackc/pgx/v4/pgxpool"
 	_ "github.com/joho/godotenv/autoload"
@@ -29,14 +30,20 @@ func main() {
 	// Init postgres
 	pgConn := &pgxpool.Pool{}
 
+	auth, err := authorizer.New(cfg.API.TokenSecret)
+	if err != nil {
+		logger.WithError(err).Fatal("failed building authorizer")
+	}
+	// // fmt.Println(auth.CreateToken("my-user", 3000*time.Second))
+
 	// Build app
-	app, err := library.BuildApp(pgConn, cfg)
+	app, err := library.BuildApp(pgConn, cfg, auth)
 	if err != nil {
 		logger.WithError(err).Fatal("failed building app")
 	}
 
 	// Build API handler
-	apiHandler, err := api.BuildHandler(app, cfg)
+	apiHandler, err := api.BuildHandler(app, cfg, auth)
 	if err != nil {
 		logger.WithError(err).Fatal("Could not initalize api")
 	}
