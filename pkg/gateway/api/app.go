@@ -14,8 +14,6 @@ import (
 )
 
 func BuildHandler(app *library.App, cfg *config.Config, auth middleware.Authorizer) (http.Handler, error) {
-	const operation = "api.BuildHandler"
-
 	r := mux.NewRouter()
 
 	r.PathPrefix("/metrics").Handler(promhttp.Handler()).Methods(http.MethodGet)
