@@ -13,14 +13,22 @@ type Handler struct {
 	Usecase accounts.Usecase
 }
 
-func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase) *Handler {
+func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase, auth middleware.Authorizer) *Handler {
 	h := &Handler{
 		Usecase: usecase,
 	}
 
-	public.HandleFunc("/do-something",
+	public.Handle("/do-something",
 		middleware.Handle(h.DoSomething)).
+		Methods(http.MethodGet)
+
+	public.Handle("/do-something-auth",
+		auth.AuthorizeRequest(middleware.Handle(h.DoSomething))).
 		Methods(http.MethodGet)
 
 	return h
 }
+
+var AddFeedbackHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+})

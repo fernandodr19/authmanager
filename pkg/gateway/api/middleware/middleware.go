@@ -12,6 +12,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type Authorizer interface {
+	AuthorizeRequest(h http.Handler) http.Handler
+}
+
 // Cors applies cors rules to router
 func Cors(r *mux.Router) http.Handler {
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Origin", "Content-Type", "Authorization"})
