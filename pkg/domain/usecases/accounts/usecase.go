@@ -26,7 +26,7 @@ func NewAccountsUsecase(accRepo accounts.Repository) *AccountsUsecase {
 }
 
 func (a AccountsUsecase) DoSomething(ctx context.Context) error {
-	instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.TokenStr)).Info("sss")
+	instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.UserIDContextKey)).Info("sss")
 	a.AccountsRepository.SignUp(ctx)
 	return nil
 }

@@ -1,6 +1,7 @@
 package accounts
 
-// Note that we can store a whole struct on context
-type AuthToken string
+import (
+	"github.com/fernandodr19/library/pkg/domain/vos"
+)
 
-const TokenStr AuthToken = "token"
+const UserIDContextKey vos.UserID = "user-id-context-key"
