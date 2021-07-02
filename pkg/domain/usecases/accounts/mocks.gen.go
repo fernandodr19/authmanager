@@ -11,74 +11,74 @@ import (
 
 // AccountsMockUsecase is a mock implementation of Usecase.
 //
-//     func TestSomethingThatUsesUsecase(t *testing.T) {
+// 	func TestSomethingThatUsesUsecase(t *testing.T) {
 //
-//         // make and configure a mocked Usecase
-//         mockedUsecase := &AccountsMockUsecase{
-//             CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (Tokens, error) {
-// 	               panic("mock out the CreateAccount method")
-//             },
-//         }
+// 		// make and configure a mocked Usecase
+// 		mockedUsecase := &AccountsMockUsecase{
+// 			CreateAccountFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (Tokens, error) {
+// 				panic("mock out the CreateAccount method")
+// 			},
+// 		}
 //
-//         // use mockedUsecase in code that requires Usecase
-//         // and then make assertions.
+// 		// use mockedUsecase in code that requires Usecase
+// 		// and then make assertions.
 //
-//     }
+// 	}
 type AccountsMockUsecase struct {
 	// CreateAccountFunc mocks the CreateAccount method.
-	CreateAccountFunc func(in1 context.Context, in2 vos.Email, in3 vos.Password) (Tokens, error)
+	CreateAccountFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (Tokens, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
 		// CreateAccount holds details about calls to the CreateAccount method.
 		CreateAccount []struct {
-			// In1 is the in1 argument value.
-			In1 context.Context
-			// In2 is the in2 argument value.
-			In2 vos.Email
-			// In3 is the in3 argument value.
-			In3 vos.Password
+			// ContextMoqParam is the contextMoqParam argument value.
+			ContextMoqParam context.Context
+			// Email is the email argument value.
+			Email vos.Email
+			// Password is the password argument value.
+			Password vos.Password
 		}
 	}
 	lockCreateAccount sync.RWMutex
 }
 
 // CreateAccount calls CreateAccountFunc.
-func (mock *AccountsMockUsecase) CreateAccount(in1 context.Context, in2 vos.Email, in3 vos.Password) (Tokens, error) {
+func (mock *AccountsMockUsecase) CreateAccount(contextMoqParam context.Context, email vos.Email, password vos.Password) (Tokens, error) {
 	callInfo := struct {
-		In1 context.Context
-		In2 vos.Email
-		In3 vos.Password
+		ContextMoqParam context.Context
+		Email           vos.Email
+		Password        vos.Password
 	}{
-		In1: in1,
-		In2: in2,
-		In3: in3,
+		ContextMoqParam: contextMoqParam,
+		Email:           email,
+		Password:        password,
 	}
 	mock.lockCreateAccount.Lock()
 	mock.calls.CreateAccount = append(mock.calls.CreateAccount, callInfo)
 	mock.lockCreateAccount.Unlock()
 	if mock.CreateAccountFunc == nil {
 		var (
-			out1 Tokens
-			out2 error
+			tokensOut Tokens
+			errOut    error
 		)
-		return out1, out2
+		return tokensOut, errOut
 	}
-	return mock.CreateAccountFunc(in1, in2, in3)
+	return mock.CreateAccountFunc(contextMoqParam, email, password)
 }
 
 // CreateAccountCalls gets all the calls that were made to CreateAccount.
 // Check the length with:
 //     len(mockedUsecase.CreateAccountCalls())
 func (mock *AccountsMockUsecase) CreateAccountCalls() []struct {
-	In1 context.Context
-	In2 vos.Email
-	In3 vos.Password
+	ContextMoqParam context.Context
+	Email           vos.Email
+	Password        vos.Password
 } {
 	var calls []struct {
-		In1 context.Context
-		In2 vos.Email
-		In3 vos.Password
+		ContextMoqParam context.Context
+		Email           vos.Email
+		Password        vos.Password
 	}
 	mock.lockCreateAccount.RLock()
 	calls = mock.calls.CreateAccount

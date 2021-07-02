@@ -46,7 +46,7 @@ test-coverage:
 .PHONY: generate
 generate:
 	@echo "Go Generating"
-	go get github.com/matryer/moq@v0.1.4
+	go get github.com/matryer/moq@v0.2.1
 	go get -u github.com/swaggo/swag/cmd/swag@v1.6.7
 	go generate ./...
 	swag init -g ./cmd/api/main.go -o ./docs/swagger #here because this needs to be called on root folder
