@@ -1,6 +1,6 @@
 # API bare bones
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/fernandodr19/api-barebones/CI?style=flat-square)](https://github.com/fernandodr19/api-barebones/actions?query=workflow%3AMain)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/fernandodr19/api-barebones/Main?style=flat-square)](https://github.com/fernandodr19/api-barebones/actions?query=workflow%3AMain)
 [![Go Report Card](https://goreportcard.com/badge/github.com/fernandodr19/api-barebones)](https://goreportcard.com/report/github.com/fernandodr19/api-barebones)
 
 Well designed over engineered barebones of ANY server side application. It was designed following DDD and clean arch principles protecting its domain logic from everything else. Don't get to much attached to the choice of frameworks and drivers because that's now really the point. They could be easily replaced by any other without having to change a single domain line.
