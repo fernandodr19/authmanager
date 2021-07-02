@@ -5,7 +5,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
+	accounts_uc "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 )
 
 type Response struct {
@@ -41,9 +42,16 @@ var (
 	ErrNotImplemented      = ErrorPayload{Type: "error:not_implemented", Title: "Not implemented"}
 )
 
+// accounts
+var (
+	ErrInvalidEmail = ErrorPayload{Type: "error:invalid_email", Title: "Invalid email"}
+)
+
 func ErrorResponse(err error) Response {
 	switch {
-	case errors.Is(err, accounts.ErrNotImplemented):
+	case errors.Is(err, accounts.ErrInvalidEmail):
+		return BadRequest(err, ErrInvalidEmail)
+	case errors.Is(err, accounts_uc.ErrNotImplemented):
 		return NotImplemented(err)
 	default:
 		return InternalServerError(err)
