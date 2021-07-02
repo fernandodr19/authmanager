@@ -38,7 +38,7 @@ endif
 	$$(go env GOPATH)/bin/golangci-lint run -c ./.golangci.yml ./...
 	
 	@go get -u github.com/client9/misspell/cmd/misspell
-	@misspell ./
+	@$$(go env GOPATH)/bin/misspell ./
 
 .PHONY: test-coverage
 test-coverage:
