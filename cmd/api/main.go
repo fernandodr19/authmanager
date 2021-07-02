@@ -45,7 +45,7 @@ func main() {
 	// Build API handler
 	apiHandler, err := api.BuildHandler(app, cfg, auth)
 	if err != nil {
-		logger.WithError(err).Fatal("Could not initalize api")
+		logger.WithError(err).Fatal("Could not initialize api")
 	}
 
 	serveApp(apiHandler, cfg)

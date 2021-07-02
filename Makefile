@@ -36,9 +36,6 @@ ifeq (, $(shell which $$(go env GOPATH)/bin/golangci-lint))
 endif
 
 	$$(go env GOPATH)/bin/golangci-lint run -c ./.golangci.yml ./...
-	
-	@go get -u github.com/client9/misspell/cmd/misspell
-	@$$(go env GOPATH)/bin/misspell ./
 
 .PHONY: test-coverage
 test-coverage:
@@ -57,6 +54,6 @@ generate:
 
 .PHONY: setup-dev
 setup-dev:
-	@echo "Setting up dev enviroment"
+	@echo "Setting up dev environment"
 	docker-compose -f $(DOCKER_COMPOSE_FILE) down
 	docker-compose -f $(DOCKER_COMPOSE_FILE) up

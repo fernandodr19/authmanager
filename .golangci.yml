@@ -12,6 +12,8 @@ linters-settings:
   exhaustive:
     check-generated: false
     default-signifies-exhaustive: true
+  misspell:
+    locale: US
   
     
 linters:
@@ -24,7 +26,7 @@ linters:
     - rowserrcheck
     - gosec
     - exhaustive
-  disable:
     - misspell
+  disable:
     - maligned
     - errcheck
