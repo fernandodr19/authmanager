@@ -7,7 +7,6 @@ import (
 	"github.com/fernandodr19/library/pkg/domain"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
-	"github.com/fernandodr19/library/pkg/instrumentation"
 )
 
 // Create account
@@ -26,9 +25,6 @@ func (h Handler) CreateAccount(r *http.Request) responses.Response {
 	operation := "accounts.Handler.CreateAccount"
 
 	ctx := r.Context()
-	log := instrumentation.Logger()
-	log.Info("doing somethings")
-
 	var body CreateAccountRequest
 	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {

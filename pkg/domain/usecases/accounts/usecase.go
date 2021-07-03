@@ -2,7 +2,6 @@ package accounts
 
 import (
 	"context"
-	"net/mail"
 	"time"
 
 	"github.com/fernandodr19/library/pkg/domain"
@@ -26,7 +25,7 @@ type Usecase interface {
 
 type Repository interface {
 	GetAccountByEmail(context.Context, vos.Email) (accounts.Account, error)
-	CreateAccount(context.Context) (vos.UserID, error)
+	CreateAccount(context.Context, vos.Email, vos.HashedPassword) (vos.UserID, error)
 	Login(context.Context) error
 	Logout(context.Context) error
 }
@@ -47,21 +46,28 @@ func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 	// instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.UserIDContextKey)).Info("sss")
 	instrumentation.Logger().WithField("email", email).Infoln("Creating account")
 
-	if !validEmail(email) {
+	if !email.Valid() {
 		return domain.Error(operation, accounts.ErrInvalidEmail)
 	}
 
-	if !validPassword(password) {
+	if !password.Valid() {
 		return domain.Error(operation, accounts.ErrInvalidPassword)
 	}
 
+	// check if user is alreary registered
 	_, err := a.AccountsRepository.GetAccountByEmail(ctx, email)
-	if err != nil {
+	if err != ErrAccountNotFound {
 		return domain.Error(operation, ErrEmailAlreadyRegistered)
 	}
 
-	// creates on db hashed pass
-	userID, err := a.AccountsRepository.CreateAccount(ctx)
+	// hashes the password
+	hashedPass, err := password.Hashed()
+	if err != nil {
+		return domain.Error(operation, err)
+	}
+
+	// create acc on db
+	userID, err := a.AccountsRepository.CreateAccount(ctx, email, hashedPass)
 	if err != nil {
 		return domain.Error(operation, err)
 	}
@@ -78,13 +84,4 @@ func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 	}).Infoln("Account created")
 
 	return nil
-}
-
-func validEmail(email vos.Email) bool {
-	_, err := mail.ParseAddress(email.String())
-	return err == nil
-}
-
-func validPassword(password vos.Password) bool {
-	return password != ""
 }

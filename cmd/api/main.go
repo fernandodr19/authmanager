@@ -70,6 +70,7 @@ func serveApp(apiHandler http.Handler, cfg *config.Config) {
 }
 
 func setupPostgres(cfg config.Postgres) (*pgx.Conn, error) {
+	// Maybe use connection pool later on..
 	conn, err := pgx.Connect(context.Background(), cfg.URL())
 	if err != nil {
 		return nil, err

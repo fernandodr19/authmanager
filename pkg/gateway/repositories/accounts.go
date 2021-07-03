@@ -3,14 +3,14 @@ package repositories
 import (
 	"context"
 
+	"github.com/fernandodr19/library/pkg/domain"
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	acc_usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
+	usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
 )
 
-var _ acc_usecase.Repository = &AccountRepository{}
+var _ usecase.Repository = &AccountRepository{}
 
 type AccountRepository struct {
 	Conn *pgx.Conn
@@ -22,20 +22,58 @@ func NewAccountRepository(db *pgx.Conn) *AccountRepository {
 	}
 }
 
-func (a AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Email) (accounts.Account, error) {
-	return accounts.Account{
-		Email: email,
-	}, nil
+func (r AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Email) (accounts.Account, error) {
+	const operation = "repositories.AccountRepository.GetAccountByEmail"
+
+	const cmd = `
+		SELECT
+			id,
+			email,
+			password,
+			created_at,
+			updated_at
+		FROM accounts
+		WHERE email = $1
+	`
+	var acc accounts.Account
+	err := r.Conn.QueryRow(ctx, cmd, email).
+		Scan(&acc.ID,
+			acc.Email,
+			acc.Password,
+			acc.CreatedAt,
+			acc.UpdatedAt)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return acc, usecase.ErrAccountNotFound
+		}
+		return acc, domain.Error(operation, err)
+	}
+
+	return acc, nil
 }
 
-func (a AccountRepository) CreateAccount(context.Context) (vos.UserID, error) {
-	return vos.UserID(uuid.NewString()), nil
+func (r AccountRepository) CreateAccount(ctx context.Context, email vos.Email, hashedPassword vos.HashedPassword) (vos.UserID, error) {
+	const operation = "repositories.AccountRepository.CreateAccount"
+
+	const cmd = `
+		INSERT INTO accounts (email, password)
+		VALUES ($1, $2)
+		RETURNING id
+	`
+	var userID vos.UserID
+	err := r.Conn.QueryRow(ctx, cmd, email, hashedPassword).
+		Scan(&userID)
+	if err != nil {
+		return "", domain.Error(operation, err)
+	}
+
+	return userID, nil
 }
 
-func (a AccountRepository) Login(context.Context) error {
-	return acc_usecase.ErrNotImplemented
+func (r AccountRepository) Login(context.Context) error {
+	return usecase.ErrNotImplemented
 }
 
-func (a AccountRepository) Logout(context.Context) error {
-	return acc_usecase.ErrNotImplemented
+func (r AccountRepository) Logout(context.Context) error {
+	return usecase.ErrNotImplemented
 }
