@@ -50,7 +50,6 @@ func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 
 	_, err := a.AccountsRepository.GetAccountByEmail(ctx, email)
 	if err != nil {
-		// SHOULD RESULT IN STATUS CONFLICT, TEST IT
 		return domain.Error(operation, ErrEmailAlreadyRegistered)
 	}
 
