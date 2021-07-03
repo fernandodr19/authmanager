@@ -7,16 +7,16 @@ import (
 	acc_usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/jackc/pgx/v4"
 )
 
 type AccountRepository struct {
-	*pgxpool.Pool
+	Conn *pgx.Conn
 }
 
-func NewAccountRepository(db *pgxpool.Pool) *AccountRepository {
+func NewAccountRepository(db *pgx.Conn) *AccountRepository {
 	return &AccountRepository{
-		Pool: db,
+		Conn: db,
 	}
 }
 

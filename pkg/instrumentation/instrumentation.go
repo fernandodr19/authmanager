@@ -8,7 +8,6 @@ import (
 
 type Instrumentation struct {
 	Logger *logrus.Entry
-	// Tracer *newrelic.Application
 }
 
 var instrumentation *Instrumentation
@@ -31,7 +30,3 @@ func Register(instr *Instrumentation) error {
 func Logger() *logrus.Entry {
 	return instrumentation.Logger
 }
-
-// func Tracer() *newrelic.Application {
-// 	return instrumentation.Tracer
-// }
