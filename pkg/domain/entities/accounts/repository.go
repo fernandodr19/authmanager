@@ -8,7 +8,7 @@ import (
 
 type Repository interface {
 	GetAccountByEmail(context.Context, vos.Email) (Account, error)
-	CreateAccount(context.Context) error
+	CreateAccount(context.Context) (vos.UserID, error)
 	Login(context.Context) error
 	Logout(context.Context) error
 }

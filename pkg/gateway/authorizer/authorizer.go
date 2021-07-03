@@ -36,8 +36,27 @@ func (payload *Payload) Valid() error {
 	return nil
 }
 
-func (b *BearerAuthorizer) CreateToken(userID vos.UserID, duration time.Duration) (vos.AccessToken, error) {
+func (b *BearerAuthorizer) CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error) {
 	const operation = "authorizer.BearerAuthorizer.CreateToken"
+
+	accessToken, err := b.createToken(userID, accessDuration)
+	if err != nil {
+		return vos.Tokens{}, domain.Error(operation, err)
+	}
+
+	refreshToken, err := b.createToken(userID, refreshDuration)
+	if err != nil {
+		return vos.Tokens{}, domain.Error(operation, err)
+	}
+
+	return vos.Tokens{
+		AccessToken:  vos.AccessToken(accessToken),
+		RefreshToken: vos.RefreshToken(refreshToken),
+	}, nil
+}
+
+func (b *BearerAuthorizer) createToken(userID vos.UserID, duration time.Duration) (string, error) {
+	const operation = "authorizer.createAccessToken"
 
 	tokenID, err := uuid.NewRandom()
 	if err != nil {
@@ -59,7 +78,7 @@ func (b *BearerAuthorizer) CreateToken(userID vos.UserID, duration time.Duration
 		return "", domain.Error(operation, err)
 	}
 
-	return vos.AccessToken(token), nil
+	return token, nil
 }
 
 func (a *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {

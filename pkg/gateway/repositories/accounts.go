@@ -6,6 +6,7 @@ import (
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 	acc_usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -25,8 +26,8 @@ func (a AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Emai
 	}, nil
 }
 
-func (a AccountRepository) CreateAccount(context.Context) error {
-	return acc_usecase.ErrNotImplemented
+func (a AccountRepository) CreateAccount(context.Context) (vos.UserID, error) {
+	return vos.UserID(uuid.NewString()), nil
 }
 
 func (a AccountRepository) Login(context.Context) error {

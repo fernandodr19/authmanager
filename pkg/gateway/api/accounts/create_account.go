@@ -18,7 +18,7 @@ import (
 // @Param Authorization header string true "Bearer Authorization Token"
 // @Accept json
 // @Produce json
-// @Success 201 {object} CreateAccountResponse
+// @Success 201
 // @Header 201 {string} Token "X-Request-Id"
 // @Failure 500 "Internal server error"
 // @Router /signup [post]
@@ -35,23 +35,15 @@ func (h Handler) CreateAccount(r *http.Request) responses.Response {
 		return responses.BadRequest(domain.Error(operation, err), responses.ErrInvalidBody)
 	}
 
-	tokesn, err := h.Usecase.CreateAccount(ctx, body.Email, body.Password)
+	err = h.Usecase.CreateAccount(ctx, body.Email, body.Password)
 	if err != nil {
 		return responses.ErrorResponse(domain.Error(operation, err))
 	}
 
-	return responses.OK(CreateAccountResponse{
-		AccessToken:  tokesn.AccessToken,
-		RefreshToken: tokesn.RefreshToken,
-	})
+	return responses.Created(nil)
 }
 
 type CreateAccountRequest struct {
 	Email    vos.Email    `json:"email"`
 	Password vos.Password `json:"password"`
-}
-
-type CreateAccountResponse struct {
-	AccessToken  vos.AccessToken  `json:"access_token"`
-	RefreshToken vos.RefreshToken `json:"refresh_token"`
 }

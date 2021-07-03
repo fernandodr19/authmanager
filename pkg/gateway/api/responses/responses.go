@@ -44,7 +44,8 @@ var (
 
 // accounts
 var (
-	ErrInvalidEmail = ErrorPayload{Type: "error:invalid_email", Title: "Invalid email"}
+	ErrInvalidEmail           = ErrorPayload{Type: "error:invalid_email", Title: "Invalid email"}
+	ErrEmailAlreadyRegistered = ErrorPayload{Type: "error:already_registered", Title: "Email already registered"}
 )
 
 func ErrorResponse(err error) Response {
@@ -53,6 +54,8 @@ func ErrorResponse(err error) Response {
 		return BadRequest(err, ErrInvalidEmail)
 	case errors.Is(err, accounts_uc.ErrNotImplemented):
 		return NotImplemented(err)
+	case errors.Is(err, accounts_uc.ErrEmailAlreadyRegistered):
+		return Conflict(err, ErrEmailAlreadyRegistered)
 	default:
 		return InternalServerError(err)
 	}

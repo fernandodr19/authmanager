@@ -15,7 +15,7 @@ import (
 //
 // 		// make and configure a mocked Usecase
 // 		mockedUsecase := &AccountsMockUsecase{
-// 			CreateAccountFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (Tokens, error) {
+// 			CreateAccountFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error) {
 // 				panic("mock out the CreateAccount method")
 // 			},
 // 		}
@@ -26,7 +26,7 @@ import (
 // 	}
 type AccountsMockUsecase struct {
 	// CreateAccountFunc mocks the CreateAccount method.
-	CreateAccountFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (Tokens, error)
+	CreateAccountFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -44,7 +44,7 @@ type AccountsMockUsecase struct {
 }
 
 // CreateAccount calls CreateAccountFunc.
-func (mock *AccountsMockUsecase) CreateAccount(contextMoqParam context.Context, email vos.Email, password vos.Password) (Tokens, error) {
+func (mock *AccountsMockUsecase) CreateAccount(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error) {
 	callInfo := struct {
 		ContextMoqParam context.Context
 		Email           vos.Email
@@ -59,7 +59,7 @@ func (mock *AccountsMockUsecase) CreateAccount(contextMoqParam context.Context, 
 	mock.lockCreateAccount.Unlock()
 	if mock.CreateAccountFunc == nil {
 		var (
-			tokensOut Tokens
+			tokensOut vos.Tokens
 			errOut    error
 		)
 		return tokensOut, errOut

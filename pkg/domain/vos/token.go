@@ -12,3 +12,8 @@ func (a AccessToken) String() string {
 func (r RefreshToken) String() string {
 	return string(r)
 }
+
+type Tokens struct {
+	AccessToken  AccessToken
+	RefreshToken RefreshToken
+}
