@@ -17,6 +17,9 @@ Well designed over engineered barebones of ANY server side application. It was d
 ### Make yourself at home
 For the following steps [Golang](https://golang.org/doc/install) is gonna be necessary.
 
+##### Setup your dev enviroment
+``$ make setup-dev``
+
 ##### Run it locally
 ``$ go run cmd/api/*``
 
