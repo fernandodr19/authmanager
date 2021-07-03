@@ -45,6 +45,7 @@ var (
 // accounts
 var (
 	ErrInvalidEmail           = ErrorPayload{Type: "error:invalid_email", Title: "Invalid email"}
+	ErrInvalidPassword        = ErrorPayload{Type: "error:invalid_password", Title: "Invalid password"}
 	ErrEmailAlreadyRegistered = ErrorPayload{Type: "error:already_registered", Title: "Email already registered"}
 )
 
@@ -52,6 +53,8 @@ func ErrorResponse(err error) Response {
 	switch {
 	case errors.Is(err, accounts.ErrInvalidEmail):
 		return BadRequest(err, ErrInvalidEmail)
+	case errors.Is(err, accounts.ErrInvalidPassword):
+		return BadRequest(err, ErrInvalidPassword)
 	case errors.Is(err, accounts_uc.ErrNotImplemented):
 		return NotImplemented(err)
 	case errors.Is(err, accounts_uc.ErrEmailAlreadyRegistered):

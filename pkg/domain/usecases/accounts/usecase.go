@@ -40,11 +40,11 @@ func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 	// instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.UserIDContextKey)).Info("sss")
 	instrumentation.Logger().WithField("email", email).Infoln("Creating account")
 
-	if !validateEmail(email) {
+	if !validEmail(email) {
 		return domain.Error(operation, accounts.ErrInvalidEmail)
 	}
 
-	if !validatePassword(password) {
+	if !validPassword(password) {
 		return domain.Error(operation, accounts.ErrInvalidPassword)
 	}
 
@@ -74,11 +74,11 @@ func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 	return nil
 }
 
-func validateEmail(email vos.Email) bool {
+func validEmail(email vos.Email) bool {
 	_, err := mail.ParseAddress(email.String())
 	return err == nil
 }
 
-func validatePassword(password vos.Password) bool {
+func validPassword(password vos.Password) bool {
 	return password != ""
 }

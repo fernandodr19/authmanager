@@ -49,7 +49,7 @@ func TestHandler_CreateAccount(t *testing.T) {
 		router.ServeHTTP(response, request(body))
 
 		//assert
-		assert.Equal(t, http.StatusOK, response.Code)
+		assert.Equal(t, http.StatusCreated, response.Code)
 		assert.NotEmpty(t, response.Header().Get(shared.XReqID))
 		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
 	})
@@ -102,8 +102,8 @@ func TestHandler_CreateAccount(t *testing.T) {
 func createHandler(err error) Handler {
 	return Handler{
 		Usecase: &accounts.AccountsMockUsecase{
-			CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (vos.Tokens, error) {
-				return vos.Tokens{}, err
+			CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) error {
+				return err
 			},
 		},
 	}

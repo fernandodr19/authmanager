@@ -6,13 +6,6 @@ definitions:
       password:
         type: string
     type: object
-  accounts.CreateAccountResponse:
-    properties:
-      access_token:
-        type: string
-      refresh_token:
-        type: string
-    type: object
 info:
   contact: {}
   description: Documentation Library API
@@ -41,13 +34,11 @@ paths:
       - application/json
       responses:
         "201":
-          description: Created
+          description: ""
           headers:
             Token:
               description: X-Request-Id
               type: string
-          schema:
-            $ref: '#/definitions/accounts.CreateAccountResponse'
         "500":
           description: Internal server error
       summary: Creates an account

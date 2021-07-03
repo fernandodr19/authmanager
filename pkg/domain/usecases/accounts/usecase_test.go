@@ -11,32 +11,32 @@ func Test_ValidEmail(t *testing.T) {
 	testTable := []struct {
 		Name  string
 		Email vos.Email
-		Error bool
+		Valid bool
 	}{
 		{
 			Name:  "valid email",
 			Email: "valid@gmail.com",
-			Error: false,
+			Valid: true,
 		},
 		{
 			Name:  "valid email with plus sign",
 			Email: "valid+123@gmail.com",
-			Error: false,
+			Valid: true,
 		},
 		{
 			Name:  "invalid without @",
 			Email: "invalid",
-			Error: true,
+			Valid: false,
 		},
 		{
 			Name:  "invalid without domain",
 			Email: "invalid@",
-			Error: true,
+			Valid: false,
 		},
 	}
 	for _, tt := range testTable {
 		t.Run(tt.Name, func(t *testing.T) {
-			assert.Equal(t, tt.Error, validateEmail(tt.Email))
+			assert.Equal(t, tt.Valid, validEmail(tt.Email))
 		})
 	}
 }

@@ -58,10 +58,7 @@ var doc = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/accounts.CreateAccountResponse"
-                        },
+                        "description": "",
                         "headers": {
                             "Token": {
                                 "type": "string",
@@ -84,17 +81,6 @@ var doc = `{
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "accounts.CreateAccountResponse": {
-            "type": "object",
-            "properties": {
-                "access_token": {
-                    "type": "string"
-                },
-                "refresh_token": {
                     "type": "string"
                 }
             }
