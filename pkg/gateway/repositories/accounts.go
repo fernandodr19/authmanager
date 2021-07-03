@@ -10,6 +10,8 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
+var _ acc_usecase.Repository = &AccountRepository{}
+
 type AccountRepository struct {
 	Conn *pgx.Conn
 }

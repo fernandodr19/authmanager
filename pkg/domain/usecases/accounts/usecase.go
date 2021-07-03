@@ -14,22 +14,29 @@ import (
 
 //go:generate moq -skip-ensure -stub -out mocks.gen.go . Usecase:AccountsMockUsecase
 
-type Usecase interface {
-	CreateAccount(context.Context, vos.Email, vos.Password) error
-}
-
 type TokenGenerator interface {
 	CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error)
 }
 
 var _ Usecase = &AccountsUsecase{}
 
+type Usecase interface {
+	CreateAccount(context.Context, vos.Email, vos.Password) error
+}
+
+type Repository interface {
+	GetAccountByEmail(context.Context, vos.Email) (accounts.Account, error)
+	CreateAccount(context.Context) (vos.UserID, error)
+	Login(context.Context) error
+	Logout(context.Context) error
+}
+
 type AccountsUsecase struct {
-	AccountsRepository accounts.Repository
+	AccountsRepository Repository
 	TokenGenerator     TokenGenerator
 }
 
-func NewAccountsUsecase(accRepo accounts.Repository, tokenGenerator TokenGenerator) *AccountsUsecase {
+func NewAccountsUsecase(accRepo Repository, tokenGenerator TokenGenerator) *AccountsUsecase {
 	return &AccountsUsecase{
 		AccountsRepository: accRepo,
 	}
