@@ -3,7 +3,7 @@ VERSION=dev
 OS ?= linux
 GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_BUILD_TIME=$(shell date '+%Y-%m-%d__%I:%M:%S%p')
-DOCKER_COMPOSE_FILE=dev/docker-compose.yml
+DOCKER_COMPOSE_FILE=docker-compose.yml
 
 .PHONY: test
 test:
@@ -56,4 +56,4 @@ generate:
 setup-dev:
 	@echo "Setting up dev environment"
 	docker-compose -f $(DOCKER_COMPOSE_FILE) down
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d
