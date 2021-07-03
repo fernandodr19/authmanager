@@ -71,6 +71,9 @@ func serveApp(apiHandler http.Handler, cfg *config.Config) {
 
 func setupPostgres(cfg config.Postgres) (*pgx.Conn, error) {
 	conn, err := pgx.Connect(context.Background(), cfg.URL())
+	if err != nil {
+		return nil, err
+	}
 
 	err = repositories.RunMigrations(cfg.URL())
 	if err != nil {
