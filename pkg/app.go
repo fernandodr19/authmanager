@@ -1,4 +1,4 @@
-package library
+package app
 
 import (
 	"github.com/fernandodr19/library/pkg/config"

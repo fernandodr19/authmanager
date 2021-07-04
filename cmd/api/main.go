@@ -6,7 +6,7 @@ import (
 	"time"
 
 	_ "github.com/fernandodr19/library/docs/swagger"
-	library "github.com/fernandodr19/library/pkg"
+	app "github.com/fernandodr19/library/pkg"
 	"github.com/fernandodr19/library/pkg/config"
 	"github.com/fernandodr19/library/pkg/gateway/api"
 	"github.com/fernandodr19/library/pkg/gateway/authorizer"
@@ -43,7 +43,7 @@ func main() {
 	// // fmt.Println(auth.CreateToken("my-user", 3000*time.Second))
 
 	// Build app
-	app, err := library.BuildApp(pgConn, cfg, auth)
+	app, err := app.BuildApp(pgConn, cfg, auth)
 	if err != nil {
 		logger.WithError(err).Fatal("failed building app")
 	}
