@@ -7,7 +7,6 @@ import (
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/instrumentation"
-	"github.com/sirupsen/logrus"
 )
 
 // CreateAccount creates a brand new account for a given user
@@ -16,7 +15,8 @@ func (u AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 
 	// TODO: receiver encrypted params (maybe JWE)
 	// instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.UserIDContextKey)).Info("sss")
-	instrumentation.Logger().WithField("email", email).Infoln("Creating account")
+	log := instrumentation.Logger().WithField("email", email)
+	log.Infoln("creating account")
 
 	if !email.Valid() {
 		return domain.Error(operation, accounts.ErrInvalidEmail)
@@ -44,10 +44,7 @@ func (u AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 		return domain.Error(operation, err)
 	}
 
-	instrumentation.Logger().WithFields(logrus.Fields{
-		"email":  email,
-		"userID": userID,
-	}).Infoln("Account created")
+	log.WithField("useID", userID).Infoln("account created")
 
 	return nil
 }

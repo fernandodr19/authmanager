@@ -14,7 +14,7 @@ func (u AccountsUsecase) Login(ctx context.Context, email vos.Email, password vo
 	const operation = "accounts.AccountsUsecase.Login"
 
 	// TODO: receiver encrypted params (maybe JWE)
-	instrumentation.Logger().WithField("email", email).Infoln("User login attempt")
+	instrumentation.Logger().WithField("email", email).Infoln("user login attempt")
 
 	tokens := vos.Tokens{}
 
@@ -37,6 +37,8 @@ func (u AccountsUsecase) Login(ctx context.Context, email vos.Email, password vo
 	if err != nil {
 		return tokens, domain.Error(operation, err)
 	}
+
+	instrumentation.Logger().WithField("email", email).Infoln("user logged in successfully")
 
 	return tokens, nil
 }

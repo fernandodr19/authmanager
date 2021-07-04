@@ -27,7 +27,7 @@ import (
 // @description Documentation Library API
 func main() {
 	logger := instrumentation.Logger()
-	logger.Infof("Build info: time[%s] git_hash[%s]", BuildTime, BuildGitCommit)
+	logger.Infof("build info: time[%s] git_hash[%s]", BuildTime, BuildGitCommit)
 
 	// Load config
 	cfg, err := config.Load()
