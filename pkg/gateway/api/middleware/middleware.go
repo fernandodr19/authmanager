@@ -12,6 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Authorizer authorizes requests
 type Authorizer interface {
 	AuthorizeRequest(h http.Handler) http.Handler
 }
@@ -24,9 +25,8 @@ func Cors(r *mux.Router) http.Handler {
 	return handlers.CORS(originsOk, headersOk, methodsOk)(r)
 }
 
-// Removes the trailing slash from request, except if it is the root url.
-// If the url is https://www.google.com/api or https://www.google.com/api/
-// both will match.
+// TrimSlashSuffix Removes the trailing slash from request, except if it is the root url.
+// If the url is https://www.google.com/api or https://www.google.com/api/ both will match.
 // This was done as gorilla mux default method for this doesn't support POST requests: https://github.com/gorilla/mux/issues/30
 func TrimSlashSuffix(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	if r.URL.Path != "/" {

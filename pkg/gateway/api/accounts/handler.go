@@ -9,10 +9,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Handler handles account related requests
 type Handler struct {
 	Usecase accounts.Usecase
 }
 
+// NewHandler builds accounts handler
 func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase, auth middleware.Authorizer) *Handler {
 	h := &Handler{
 		Usecase: usecase,
@@ -28,7 +30,3 @@ func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase,
 
 	return h
 }
-
-var AddFeedbackHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-})
