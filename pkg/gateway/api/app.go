@@ -13,6 +13,7 @@ import (
 	"github.com/urfave/negroni"
 )
 
+// BuildHandler builds api handler
 func BuildHandler(app *library.App, cfg *config.Config, auth middleware.Authorizer) (http.Handler, error) {
 	r := mux.NewRouter()
 

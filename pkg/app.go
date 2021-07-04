@@ -12,6 +12,7 @@ type App struct {
 	Accounts accounts.Usecase
 }
 
+// BuildApp builds application
 func BuildApp(dbConn *pgx.Conn, cfg *config.Config, tokenGenerator accounts.TokenGenerator) (*App, error) {
 	accRepo := repositories.NewAccountRepository(dbConn)
 
