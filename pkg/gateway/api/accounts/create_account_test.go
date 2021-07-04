@@ -32,71 +32,69 @@ func TestHandler_CreateAccount(t *testing.T) {
 		return httptest.NewRequest(http.MethodPost, target, bytes.NewReader(body))
 	}
 
-	t.Run("should return 200", func(t *testing.T) {
-		// prepare
-		handler := createHandler(nil)
-		response := httptest.NewRecorder()
-		router := mux.NewRouter()
-		router.HandleFunc(routePattern, middleware.Handle(handler.CreateAccount)).Methods(http.MethodPost)
+	testTable := []struct {
+		Name                 string
+		Handler              Handler
+		Req                  CreateAccountRequest
+		ExpectedStatusCode   int
+		ExpectedErrorPayload responses.ErrorPayload
+	}{
+		{
+			Name:    "sign up happy path",
+			Handler: createHandler(nil),
+			Req: CreateAccountRequest{
+				Email:    "valid@gmail.com",
+				Password: "123",
+			},
+			ExpectedStatusCode: http.StatusCreated,
+		},
+		{
+			Name:    "bad req invalid email",
+			Handler: createHandler(acc.ErrInvalidEmail),
+			Req: CreateAccountRequest{
+				Email:    "invalid",
+				Password: "123",
+			},
+			ExpectedStatusCode:   http.StatusBadRequest,
+			ExpectedErrorPayload: responses.ErrInvalidEmail,
+		},
+		{
+			Name:    "bad req invalid email",
+			Handler: createHandler(acc.ErrInvalidPassword),
+			Req: CreateAccountRequest{
+				Email:    "valid@gmail.com",
+				Password: "",
+			},
+			ExpectedStatusCode:   http.StatusBadRequest,
+			ExpectedErrorPayload: responses.ErrInvalidPassword,
+		},
+	}
+	for _, tt := range testTable {
+		t.Run(tt.Name, func(t *testing.T) {
+			// prepare
+			response := httptest.NewRecorder()
+			router := mux.NewRouter()
+			router.HandleFunc(routePattern, middleware.Handle(tt.Handler.CreateAccount)).Methods(http.MethodPost)
 
-		body, err := json.Marshal(CreateAccountRequest{
-			Email:    "valid@gmail.com",
-			Password: "123",
+			body, err := json.Marshal(tt.Req)
+			require.NoError(t, err)
+
+			// test
+			router.ServeHTTP(response, request(body))
+
+			//assert
+			assert.Equal(t, tt.ExpectedStatusCode, response.Code)
+			assert.NotEmpty(t, response.Header().Get(shared.XReqID))
+			assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
+
+			if response.Code != http.StatusCreated {
+				var errPayload responses.ErrorPayload
+				err = json.NewDecoder(response.Body).Decode(&errPayload)
+				require.NoError(t, err)
+				assert.Equal(t, tt.ExpectedErrorPayload, errPayload)
+			}
 		})
-		require.NoError(t, err)
-
-		// test
-		router.ServeHTTP(response, request(body))
-
-		//assert
-		assert.Equal(t, http.StatusCreated, response.Code)
-		assert.NotEmpty(t, response.Header().Get(shared.XReqID))
-		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
-	})
-
-	t.Run("should return 400", func(t *testing.T) {
-		// prepare
-		handler := createHandler(accounts.ErrNotImplemented)
-		response := httptest.NewRecorder()
-		router := mux.NewRouter()
-		router.HandleFunc(routePattern, middleware.Handle(handler.CreateAccount)).Methods(http.MethodPost)
-
-		// test
-		router.ServeHTTP(response, request(nil))
-
-		//assert
-		assert.Equal(t, http.StatusBadRequest, response.Code)
-		assert.NotEmpty(t, response.Header().Get(shared.XReqID))
-		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
-	})
-
-	t.Run("should return 400 for invalid email", func(t *testing.T) {
-		// prepare
-		handler := createHandler(acc.ErrInvalidEmail)
-		response := httptest.NewRecorder()
-		router := mux.NewRouter()
-		router.HandleFunc(routePattern, middleware.Handle(handler.CreateAccount)).Methods(http.MethodPost)
-
-		body, err := json.Marshal(CreateAccountRequest{
-			Email:    "invalid_email",
-			Password: "123",
-		})
-		require.NoError(t, err)
-
-		// test
-		router.ServeHTTP(response, request(body))
-
-		var errorPayload responses.ErrorPayload
-		err = json.NewDecoder(response.Body).Decode(&errorPayload)
-		require.NoError(t, err)
-
-		assert.Equal(t, responses.ErrInvalidEmail.Type, errorPayload.Type)
-
-		//assert
-		assert.Equal(t, http.StatusBadRequest, response.Code)
-		assert.NotEmpty(t, response.Header().Get(shared.XReqID))
-		assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
-	})
+	}
 }
 
 func createHandler(err error) Handler {
