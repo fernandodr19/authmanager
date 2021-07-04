@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
+// App contains application's usecases
 type App struct {
 	Accounts accounts.Usecase
 }
