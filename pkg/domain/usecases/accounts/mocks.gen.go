@@ -5,6 +5,7 @@ package accounts
 
 import (
 	"context"
+	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"sync"
 )
@@ -18,6 +19,9 @@ import (
 // 			CreateAccountFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) error {
 // 				panic("mock out the CreateAccount method")
 // 			},
+// 			GetAccountDetaiilsFunc: func(contextMoqParam context.Context) (accounts.Account, error) {
+// 				panic("mock out the GetAccountDetaiils method")
+// 			},
 // 			LoginFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error) {
 // 				panic("mock out the Login method")
 // 			},
@@ -30,6 +34,9 @@ import (
 type AccountsMockUsecase struct {
 	// CreateAccountFunc mocks the CreateAccount method.
 	CreateAccountFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) error
+
+	// GetAccountDetaiilsFunc mocks the GetAccountDetaiils method.
+	GetAccountDetaiilsFunc func(contextMoqParam context.Context) (accounts.Account, error)
 
 	// LoginFunc mocks the Login method.
 	LoginFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error)
@@ -45,6 +52,11 @@ type AccountsMockUsecase struct {
 			// Password is the password argument value.
 			Password vos.Password
 		}
+		// GetAccountDetaiils holds details about calls to the GetAccountDetaiils method.
+		GetAccountDetaiils []struct {
+			// ContextMoqParam is the contextMoqParam argument value.
+			ContextMoqParam context.Context
+		}
 		// Login holds details about calls to the Login method.
 		Login []struct {
 			// ContextMoqParam is the contextMoqParam argument value.
@@ -55,8 +67,9 @@ type AccountsMockUsecase struct {
 			Password vos.Password
 		}
 	}
-	lockCreateAccount sync.RWMutex
-	lockLogin         sync.RWMutex
+	lockCreateAccount      sync.RWMutex
+	lockGetAccountDetaiils sync.RWMutex
+	lockLogin              sync.RWMutex
 }
 
 // CreateAccount calls CreateAccountFunc.
@@ -98,6 +111,41 @@ func (mock *AccountsMockUsecase) CreateAccountCalls() []struct {
 	mock.lockCreateAccount.RLock()
 	calls = mock.calls.CreateAccount
 	mock.lockCreateAccount.RUnlock()
+	return calls
+}
+
+// GetAccountDetaiils calls GetAccountDetaiilsFunc.
+func (mock *AccountsMockUsecase) GetAccountDetaiils(contextMoqParam context.Context) (accounts.Account, error) {
+	callInfo := struct {
+		ContextMoqParam context.Context
+	}{
+		ContextMoqParam: contextMoqParam,
+	}
+	mock.lockGetAccountDetaiils.Lock()
+	mock.calls.GetAccountDetaiils = append(mock.calls.GetAccountDetaiils, callInfo)
+	mock.lockGetAccountDetaiils.Unlock()
+	if mock.GetAccountDetaiilsFunc == nil {
+		var (
+			accountOut accounts.Account
+			errOut     error
+		)
+		return accountOut, errOut
+	}
+	return mock.GetAccountDetaiilsFunc(contextMoqParam)
+}
+
+// GetAccountDetaiilsCalls gets all the calls that were made to GetAccountDetaiils.
+// Check the length with:
+//     len(mockedUsecase.GetAccountDetaiilsCalls())
+func (mock *AccountsMockUsecase) GetAccountDetaiilsCalls() []struct {
+	ContextMoqParam context.Context
+} {
+	var calls []struct {
+		ContextMoqParam context.Context
+	}
+	mock.lockGetAccountDetaiils.RLock()
+	calls = mock.calls.GetAccountDetaiils
+	mock.lockGetAccountDetaiils.RUnlock()
 	return calls
 }
 

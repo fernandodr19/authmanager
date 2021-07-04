@@ -20,7 +20,7 @@ import (
 // @Failure 401 "Invalid password"
 // @Failure 404 "User not found"
 // @Failure 500 "Internal server error"
-// @Router /login [post]
+// @Router /accounts/login [post]
 // Login handles login requests
 func (h Handler) Login(r *http.Request) responses.Response {
 	operation := "accounts.Handler.Login"

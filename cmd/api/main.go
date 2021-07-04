@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
 	_ "github.com/fernandodr19/library/docs/swagger"
 	app "github.com/fernandodr19/library/pkg"
 	"github.com/fernandodr19/library/pkg/config"
+	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 	"github.com/fernandodr19/library/pkg/gateway/api"
 	"github.com/fernandodr19/library/pkg/gateway/authorizer"
 	"github.com/fernandodr19/library/pkg/gateway/repositories"
@@ -45,7 +47,8 @@ func main() {
 	if err != nil {
 		logger.WithError(err).Fatal("failed building authorizer")
 	}
-	// // fmt.Println(auth.CreateToken("my-user", 3000*time.Second))
+	t, _ := auth.CreateTokens(accounts.Account{ID: "3d5a5c6a-d589-4e7f-9269-f5346fc40549"}, 3000*time.Second, 3000*time.Second)
+	fmt.Println(t.AccessToken)
 
 	// Build app
 	app, err := app.BuildApp(pgConn, cfg, auth)

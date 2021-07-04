@@ -21,8 +21,8 @@ import (
 
 func TestHandler_Login(t *testing.T) {
 	const (
-		routePattern = "/api/v1/login"
-		target       = "/api/v1/login"
+		routePattern = "/api/v1/accounts/login"
+		target       = "/api/v1/accounts/login"
 	)
 
 	request := func(body []byte) *http.Request {

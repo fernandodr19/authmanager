@@ -22,7 +22,7 @@ import (
 // @Failure 409 "User already registered"
 // @Failure 422 "Request is well formed but contains invalid data"
 // @Failure 500 "Internal server error"
-// @Router /signup [post]
+// @Router /accounts/signup [post]
 // CreateAccount handles create account requests
 func (h Handler) CreateAccount(r *http.Request) responses.Response {
 	operation := "accounts.Handler.CreateAccount"

@@ -16,7 +16,7 @@ var _ Usecase = &AccountsUsecase{}
 type Usecase interface {
 	CreateAccount(context.Context, vos.Email, vos.Password) error
 	Login(context.Context, vos.Email, vos.Password) (vos.Tokens, error)
-	// Logout(context.Context, vos.Email, vos.Password) (vos.Tokens, error)
+	GetAccountDetaiils(context.Context) (accounts.Account, error)
 	// TODO: Logout
 	// GetAccountDetails
 	// DeleteAccount

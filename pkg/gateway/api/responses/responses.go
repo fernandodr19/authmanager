@@ -45,13 +45,15 @@ type ErrorPayload struct {
 var (
 	ErrInternalServerError = ErrorPayload{Error: Error{Code: "error:internal_server_error", Description: "Internal Server Error"}}
 	ErrInvalidBody         = ErrorPayload{Error: Error{Code: "error:invalid_body", Description: "Invalid body"}}
-	ErrInvalidAuth         = ErrorPayload{Error: Error{Code: "error:invalid_auth", Description: "Invalid authorization"}}
 	ErrInvalidParams       = ErrorPayload{Error: Error{Code: "error:invalid_parameters", Description: "Invalid query parameters"}}
 	ErrNotImplemented      = ErrorPayload{Error: Error{Code: "error:not_implemented", Description: "Not implemented"}}
+	ErrMissingAuthHeader   = ErrorPayload{Error: Error{Code: "error:missing_auth_header", Description: "Missing auth header"}}
+	ErrInvalidAuthHeader   = ErrorPayload{Error: Error{Code: "error:invalid_auth_header", Description: "Invalid auth header"}}
 )
 
 // accounts
 var (
+	ErrInvalidUserID          = ErrorPayload{Error: Error{Code: "error:invalid_user_id", Description: "Invalid user id"}}
 	ErrAccountNotFound        = ErrorPayload{Error: Error{Code: "error:account_not_found", Description: "Account not found"}}
 	ErrInvalidEmail           = ErrorPayload{Error: Error{Code: "error:invalid_email", Description: "Invalid email"}}
 	ErrInvalidPassword        = ErrorPayload{Error: Error{Code: "error:invalid_password", Description: "Invalid password"}}

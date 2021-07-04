@@ -28,7 +28,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/login": {
+        "/accounts/login": {
             "post": {
                 "description": "Authenticate user credentials.",
                 "consumes": [
@@ -71,7 +71,7 @@ var doc = `{
                 }
             }
         },
-        "/signup": {
+        "/accounts/signup": {
             "post": {
                 "description": "Creates an account for a given email.",
                 "consumes": [
@@ -114,6 +114,54 @@ var doc = `{
                     },
                     "422": {
                         "description": "Request is well formed but contains invalid data"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/accounts/{acc_id}": {
+            "get": {
+                "description": "Authenticate user credentials.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Authenticate user credentials",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Authorization Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "acc_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/accounts.LoginResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid password"
+                    },
+                    "404": {
+                        "description": "User not found"
                     },
                     "500": {
                         "description": "Internal server error"

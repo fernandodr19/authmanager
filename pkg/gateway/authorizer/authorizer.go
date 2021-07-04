@@ -12,6 +12,7 @@ import (
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 	acc_usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
+	"github.com/fernandodr19/library/pkg/gateway/api/responses"
 	"github.com/google/uuid"
 )
 
@@ -95,15 +96,16 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
 			// TODO use responses package maybe?
-			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Missing auth header"))
+			resp := responses.Unauthorized(nil, responses.ErrMissingAuthHeader)
+			responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
 			return
 		}
 
 		splitedAuthHeader := strings.Split(authHeader, " ")
 		if len(splitedAuthHeader) != 2 {
-			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Invalid auth header"))
+			// TODO use responses package maybe?
+			resp := responses.Unauthorized(nil, responses.ErrInvalidAuthHeader)
+			responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
 			return
 		}
 
@@ -114,6 +116,8 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
+
+		// TODO: check param user id against token's?
 
 		ctx := context.WithValue(r.Context(), accounts.UserIDContextKey, payload.UserID)
 		h.ServeHTTP(w, r.WithContext(ctx))

@@ -31,7 +31,39 @@ info:
   title: Swagger library API
   version: "1.0"
 paths:
-  /login:
+  /accounts/{acc_id}:
+    get:
+      consumes:
+      - application/json
+      description: Authenticate user credentials.
+      parameters:
+      - description: Bearer Authorization Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Account ID
+        in: path
+        name: acc_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/accounts.LoginResponse'
+        "401":
+          description: Invalid password
+        "404":
+          description: User not found
+        "500":
+          description: Internal server error
+      summary: Authenticate user credentials
+      tags:
+      - Accounts
+  /accounts/login:
     post:
       consumes:
       - application/json
@@ -59,7 +91,7 @@ paths:
       summary: Authenticate user credentials
       tags:
       - Accounts
-  /signup:
+  /accounts/signup:
     post:
       consumes:
       - application/json

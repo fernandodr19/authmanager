@@ -13,6 +13,7 @@ import (
 func (u AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, password vos.Password) error {
 	const operation = "accounts.AccountsUsecase.CreateAccount"
 
+	// TODO: receiver encrypted params (maybe JWE)
 	log := logger.FromCtx(ctx).WithField("email", email)
 	log.Infoln("creating account")
 
