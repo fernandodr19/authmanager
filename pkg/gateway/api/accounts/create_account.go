@@ -41,7 +41,7 @@ func (h Handler) CreateAccount(r *http.Request) responses.Response {
 	return responses.Created(nil)
 }
 
-// CreateAccountRequest
+// CreateAccountRequest payload
 type CreateAccountRequest struct {
 	Email    vos.Email    `json:"email"`
 	Password vos.Password `json:"password"`

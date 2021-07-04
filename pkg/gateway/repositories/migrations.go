@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/golang-migrate/migrate/v4"
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres" // needed to describe db driver
 	"github.com/golang-migrate/migrate/v4/source/httpfs"
 )
 
