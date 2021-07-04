@@ -42,8 +42,10 @@ func (p *payload) Valid() error {
 }
 
 // CreateTokens generate both access & refresh tokens
-func (b *bearerAuthorizer) CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error) {
+func (b *bearerAuthorizer) CreateTokens(acc accounts.Account, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error) {
 	const operation = "authorizer.BearerAuthorizer.CreateToken"
+
+	userID := acc.ID
 
 	accessToken, err := b.createToken(userID, accessDuration)
 	if err != nil {

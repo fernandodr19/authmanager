@@ -15,6 +15,7 @@ var _ Usecase = &AccountsUsecase{}
 // Usecase of accounts
 type Usecase interface {
 	CreateAccount(context.Context, vos.Email, vos.Password) error
+	Login(context.Context, vos.Email, vos.Password) (vos.Tokens, error)
 }
 
 // Repository of accounts
@@ -40,7 +41,7 @@ func NewAccountsUsecase(accRepo Repository, tokenGenerator TokenGenerator, encry
 
 // TokenGenerator generates access & refresh tokens
 type TokenGenerator interface {
-	CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error)
+	CreateTokens(acc accounts.Account, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error)
 }
 
 // Encrypter encrypt passwords & validate them

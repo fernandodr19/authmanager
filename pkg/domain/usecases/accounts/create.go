@@ -11,8 +11,10 @@ import (
 )
 
 // CreateAccount creates a brand new account for a given user
-func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, password vos.Password) error {
+func (u AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, password vos.Password) error {
 	const operation = "accounts.AccountsUsecase.CreateAccount"
+
+	// TODO: receiver encrypted params (maybe JWE)
 	// instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.UserIDContextKey)).Info("sss")
 	instrumentation.Logger().WithField("email", email).Infoln("Creating account")
 
@@ -25,28 +27,22 @@ func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 	}
 
 	// check if user is alreary registered
-	_, err := a.AccountsRepository.GetAccountByEmail(ctx, email)
+	_, err := u.AccountsRepository.GetAccountByEmail(ctx, email)
 	if err != ErrAccountNotFound {
 		return domain.Error(operation, ErrEmailAlreadyRegistered)
 	}
 
 	// hashes the password
-	hashedPass, err := a.Encrypter.HashedPassword(password)
+	hashedPass, err := u.Encrypter.HashedPassword(password)
 	if err != nil {
 		return domain.Error(operation, err)
 	}
 
 	// create acc on db
-	userID, err := a.AccountsRepository.CreateAccount(ctx, email, hashedPass)
+	userID, err := u.AccountsRepository.CreateAccount(ctx, email, hashedPass)
 	if err != nil {
 		return domain.Error(operation, err)
 	}
-
-	// generates token ONLY on login, change that
-	// tokens, err := a.TokenGenerator.CreateTokens(userID, 5*time.Minute, 2*time.Hour)
-	// if err != nil {
-	// 	return domain.Error(operation, err)
-	// }
 
 	instrumentation.Logger().WithFields(logrus.Fields{
 		"email":  email,

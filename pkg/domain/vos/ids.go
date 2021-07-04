@@ -1,6 +1,8 @@
 package vos
 
-import "net/mail"
+import (
+	"net/mail"
+)
 
 //nolint
 type (

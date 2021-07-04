@@ -27,68 +27,7 @@ var doc = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {
-        "/signup": {
-            "post": {
-                "description": "Creates an account for a given email.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Accounts"
-                ],
-                "summary": "Creates an account",
-                "parameters": [
-                    {
-                        "description": "Body",
-                        "name": "Body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/accounts.CreateAccountRequest"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer Authorization Token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "headers": {
-                            "Token": {
-                                "type": "string",
-                                "description": "X-Request-Id"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "accounts.CreateAccountRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        }
-    }
+    "paths": {}
 }`
 
 type swaggerInfo struct {

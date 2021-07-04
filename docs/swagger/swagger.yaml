@@ -1,12 +1,4 @@
 basePath: /api/v1
-definitions:
-  accounts.CreateAccountRequest:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -16,38 +8,7 @@ info:
     url: https://opensource.org/licenses/MIT
   title: Swagger library API
   version: "1.0"
-paths:
-  /signup:
-    post:
-      consumes:
-      - application/json
-      description: Creates an account for a given email.
-      parameters:
-      - description: Body
-        in: body
-        name: Body
-        required: true
-        schema:
-          $ref: '#/definitions/accounts.CreateAccountRequest'
-      - description: Bearer Authorization Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: ""
-          headers:
-            Token:
-              description: X-Request-Id
-              type: string
-        "500":
-          description: Internal server error
-      summary: Creates an account
-      tags:
-      - Accounts
+paths: {}
 schemes:
 - http
 swagger: "2.0"
