@@ -12,11 +12,12 @@ import (
 
 var _ Usecase = &AccountsUsecase{}
 
-// Accounts usecase
+// Usecase of accounts
 type Usecase interface {
 	CreateAccount(context.Context, vos.Email, vos.Password) error
 }
 
+// Repository of accounts
 type Repository interface {
 	GetAccountByEmail(context.Context, vos.Email) (accounts.Account, error)
 	CreateAccount(context.Context, vos.Email, vos.HashedPassword) (vos.UserID, error)
@@ -24,12 +25,14 @@ type Repository interface {
 	Logout(context.Context) error
 }
 
+// AccountsUsecase represents account's usecase
 type AccountsUsecase struct {
 	AccountsRepository Repository
 	TokenGenerator     TokenGenerator
 	Encrypter          Encrypter
 }
 
+// NewAccountsUsecase builds an account usecase
 func NewAccountsUsecase(accRepo Repository, tokenGenerator TokenGenerator, encrypter Encrypter) *AccountsUsecase {
 	return &AccountsUsecase{
 		AccountsRepository: accRepo,
@@ -37,10 +40,12 @@ func NewAccountsUsecase(accRepo Repository, tokenGenerator TokenGenerator, encry
 	}
 }
 
+// TokenGenerator generates access & refresh tokens
 type TokenGenerator interface {
 	CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error)
 }
 
+// Encrypter encrypt passwords & validate them
 type Encrypter interface {
 	HashedPassword(password vos.Password) (vos.HashedPassword, error)
 	PasswordMathces(password vos.Password, hashedPassword vos.HashedPassword) bool
