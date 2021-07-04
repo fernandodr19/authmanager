@@ -145,6 +145,7 @@ func Accepted(payload interface{}) Response {
 	}
 }
 
+// SendJSON responds requests based on
 func SendJSON(w http.ResponseWriter, payload interface{}, statusCode int) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
