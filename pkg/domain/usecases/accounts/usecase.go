@@ -12,6 +12,7 @@ import (
 
 var _ Usecase = &AccountsUsecase{}
 
+// Accounts usecase
 type Usecase interface {
 	CreateAccount(context.Context, vos.Email, vos.Password) error
 }

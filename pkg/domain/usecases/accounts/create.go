@@ -10,6 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// CreateAccount creates a brand new account for a given user
 func (a AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, password vos.Password) error {
 	const operation = "accounts.AccountsUsecase.CreateAccount"
 	// instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.UserIDContextKey)).Info("sss")
