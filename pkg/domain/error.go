@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// BasicDomainError is an abstraction to archieve better error tracing
+// BasicDomainError is an abstraction to archive better error tracing
 type BasicDomainError struct {
 	op  string // domain operations stack for pretty error stacktrace
 	err error  // the error itself
