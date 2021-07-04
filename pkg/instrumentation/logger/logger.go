@@ -17,6 +17,7 @@ func init() {
 	defaultLogger = logrus.NewEntry(logrus.New())
 }
 
+// Register overrides the default logger
 func Register(logger *logrus.Entry) error {
 	if logger == nil {
 		return errors.New("tried to register nil logger")
@@ -41,4 +42,9 @@ func FromCtx(ctx context.Context) *logrus.Entry {
 	}
 
 	return logger.(*logrus.Entry)
+}
+
+// ToCtx returns a new context with the provided logger
+func ToCtx(ctx context.Context, logger *logrus.Entry) context.Context {
+	return context.WithValue(ctx, LoggerCtxKey, logger)
 }

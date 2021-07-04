@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"context"
 	"net/http"
 	"strings"
 
@@ -40,7 +39,6 @@ func TrimSlashSuffix(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 // Handle middleware function to treat rest responses.
 func Handle(handler func(r *http.Request) responses.Response) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
 		// create req id if none is provided
 		reqID := w.Header().Get(shared.XReqID)
 		if reqID == "" {
@@ -49,8 +47,7 @@ func Handle(handler func(r *http.Request) responses.Response) http.HandlerFunc {
 		}
 
 		log := logger.Default().WithField(shared.XReqID, reqID)
-		ctx := r.Context()
-		ctx = context.WithValue(ctx, logger.LoggerCtxKey, log)
+		ctx := logger.ToCtx(r.Context(), log)
 
 		response := handler(r.WithContext(ctx))
 		if response.Error != nil {
