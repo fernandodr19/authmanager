@@ -19,6 +19,11 @@ import (
 
 // @title Swagger library API
 // @version 1.0
+// @host localhost:3000
+// @basePath /api/v1
+// @schemes http
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
 // @description Documentation Library API
 func main() {
 	logger := instrumentation.Logger()

@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   accounts.CreateAccountRequest:
     properties:
@@ -6,10 +7,13 @@ definitions:
       password:
         type: string
     type: object
+host: localhost:3000
 info:
   contact: {}
   description: Documentation Library API
-  license: {}
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
   title: Swagger library API
   version: "1.0"
 paths:
@@ -44,4 +48,6 @@ paths:
       summary: Creates an account
       tags:
       - Accounts
+schemes:
+- http
 swagger: "2.0"

@@ -19,7 +19,10 @@ var doc = `{
         "description": "{{.Description}}",
         "title": "{{.Title}}",
         "contact": {},
-        "license": {},
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -100,9 +103,9 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "",
-	BasePath:    "",
-	Schemes:     []string{},
+	Host:        "localhost:3000",
+	BasePath:    "/api/v1",
+	Schemes:     []string{"http"},
 	Title:       "Swagger library API",
 	Description: "Documentation Library API",
 }
