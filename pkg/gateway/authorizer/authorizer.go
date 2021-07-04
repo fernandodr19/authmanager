@@ -43,7 +43,7 @@ func (payload *Payload) Valid() error {
 	return nil
 }
 
-// Create tokens generate both access & refresh tokens
+// CreateTokens generate both access & refresh tokens
 func (b *BearerAuthorizer) CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error) {
 	const operation = "authorizer.BearerAuthorizer.CreateToken"
 
@@ -90,7 +90,7 @@ func (b *BearerAuthorizer) createToken(userID vos.UserID, duration time.Duration
 }
 
 // AuthorizeRequest is a middleware that handles request authorization
-func (a *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
+func (b *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
@@ -109,7 +109,7 @@ func (a *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 
 		token := splitedAuthHeader[1]
 
-		payload, err := a.verifyToken(token)
+		payload, err := b.verifyToken(token)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			return
