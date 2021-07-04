@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	acc "github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
+	usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
@@ -50,7 +50,7 @@ func TestHandler_CreateAccount(t *testing.T) {
 		},
 		{
 			Name:    "bad req invalid email",
-			Handler: createHandler(acc.ErrInvalidEmail),
+			Handler: createHandler(accounts.ErrInvalidEmail),
 			Req: CreateAccountRequest{
 				Email:    "invalid",
 				Password: "123",
@@ -59,14 +59,24 @@ func TestHandler_CreateAccount(t *testing.T) {
 			ExpectedErrorPayload: responses.ErrInvalidEmail,
 		},
 		{
-			Name:    "bad req invalid email",
-			Handler: createHandler(acc.ErrInvalidPassword),
+			Name:    "bad req invalid password",
+			Handler: createHandler(accounts.ErrInvalidPassword),
 			Req: CreateAccountRequest{
 				Email:    "valid@gmail.com",
 				Password: "",
 			},
 			ExpectedStatusCode:   http.StatusBadRequest,
 			ExpectedErrorPayload: responses.ErrInvalidPassword,
+		},
+		{
+			Name:    "conflicted email",
+			Handler: createHandler(usecase.ErrEmailAlreadyRegistered),
+			Req: CreateAccountRequest{
+				Email:    "valid@gmail.com",
+				Password: "123",
+			},
+			ExpectedStatusCode:   http.StatusConflict,
+			ExpectedErrorPayload: responses.ErrEmailAlreadyRegistered,
 		},
 	}
 	for _, tt := range testTable {
@@ -99,7 +109,7 @@ func TestHandler_CreateAccount(t *testing.T) {
 
 func createHandler(err error) Handler {
 	return Handler{
-		Usecase: &accounts.AccountsMockUsecase{
+		Usecase: &usecase.AccountsMockUsecase{
 			CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) error {
 				return err
 			},
