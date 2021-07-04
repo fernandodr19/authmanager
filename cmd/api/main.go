@@ -11,7 +11,7 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/api"
 	"github.com/fernandodr19/library/pkg/gateway/authorizer"
 	"github.com/fernandodr19/library/pkg/gateway/repositories"
-	"github.com/fernandodr19/library/pkg/instrumentation"
+	"github.com/fernandodr19/library/pkg/instrumentation/logger"
 	"github.com/jackc/pgx/v4"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -26,7 +26,7 @@ import (
 // @license.url https://opensource.org/licenses/MIT
 // @description Documentation Library API
 func main() {
-	logger := instrumentation.Logger()
+	logger := logger.Default()
 	logger.Infof("build info: time[%s] git_hash[%s]", BuildTime, BuildGitCommit)
 
 	// Load config
@@ -70,8 +70,8 @@ func serveApp(apiHandler http.Handler, cfg *config.Config) {
 		ReadTimeout:  15 * time.Second,
 	}
 
-	instrumentation.Logger().WithField("address", cfg.API.Address).Info("server starting...")
-	instrumentation.Logger().Fatal(server.ListenAndServe())
+	logger.Default().WithField("address", cfg.API.Address).Info("server starting...")
+	logger.Default().Fatal(server.ListenAndServe())
 }
 
 func setupPostgres(cfg config.Postgres) (*pgx.Conn, error) {

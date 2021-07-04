@@ -1,12 +1,13 @@
 package middleware
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
 	"github.com/fernandodr19/library/pkg/gateway/api/shared"
-	"github.com/fernandodr19/library/pkg/instrumentation"
+	"github.com/fernandodr19/library/pkg/instrumentation/logger"
 	"github.com/google/uuid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -39,12 +40,22 @@ func TrimSlashSuffix(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 // Handle middleware function to treat rest responses.
 func Handle(handler func(r *http.Request) responses.Response) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		logger := instrumentation.Logger()
 
-		response := handler(r)
+		// create req id if none is provided
+		reqID := w.Header().Get(shared.XReqID)
+		if reqID == "" {
+			reqID = uuid.NewString()
+			w.Header().Set(shared.XReqID, reqID)
+		}
+
+		log := logger.Default().WithField(shared.XReqID, reqID)
+		ctx := r.Context()
+		ctx = context.WithValue(ctx, logger.LoggerCtxKey, log)
+
+		response := handler(r.WithContext(ctx))
 		if response.Error != nil {
 			err := response.Error
-			logger.Error(err)
+			log.Error(err)
 		}
 
 		// Setting headers
@@ -52,13 +63,9 @@ func Handle(handler func(r *http.Request) responses.Response) http.HandlerFunc {
 			w.Header().Set(key, value)
 		}
 
-		if w.Header().Get(shared.XReqID) == "" {
-			w.Header().Set(shared.XReqID, uuid.NewString())
-		}
-
 		err := responses.SendJSON(w, response.Payload, response.Status)
 		if err != nil {
-			logger.Error(err)
+			log.Error(err)
 		}
 	}
 }

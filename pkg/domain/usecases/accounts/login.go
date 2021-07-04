@@ -6,7 +6,7 @@ import (
 
 	"github.com/fernandodr19/library/pkg/domain"
 	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/instrumentation"
+	"github.com/fernandodr19/library/pkg/instrumentation/logger"
 )
 
 // Login authenticates the user
@@ -14,7 +14,8 @@ func (u AccountsUsecase) Login(ctx context.Context, email vos.Email, password vo
 	const operation = "accounts.AccountsUsecase.Login"
 
 	// TODO: receiver encrypted params (maybe JWE)
-	instrumentation.Logger().WithField("email", email).Infoln("user login attempt")
+	log := logger.FromCtx(ctx)
+	log.WithField("email", email).Infoln("user login attempt")
 
 	tokens := vos.Tokens{}
 
@@ -38,7 +39,7 @@ func (u AccountsUsecase) Login(ctx context.Context, email vos.Email, password vo
 		return tokens, domain.Error(operation, err)
 	}
 
-	instrumentation.Logger().WithField("email", email).Infoln("user logged in successfully")
+	log.WithField("email", email).Infoln("user logged in successfully")
 
 	return tokens, nil
 }

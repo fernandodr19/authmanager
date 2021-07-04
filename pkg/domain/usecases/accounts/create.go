@@ -6,16 +6,14 @@ import (
 	"github.com/fernandodr19/library/pkg/domain"
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/instrumentation"
+	"github.com/fernandodr19/library/pkg/instrumentation/logger"
 )
 
 // CreateAccount creates a brand new account for a given user
 func (u AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, password vos.Password) error {
 	const operation = "accounts.AccountsUsecase.CreateAccount"
 
-	// TODO: receiver encrypted params (maybe JWE)
-	// instrumentation.Logger().WithField("TOKEN", ctx.Value(accounts.UserIDContextKey)).Info("sss")
-	log := instrumentation.Logger().WithField("email", email)
+	log := logger.FromCtx(ctx).WithField("email", email)
 	log.Infoln("creating account")
 
 	if !email.Valid() {
