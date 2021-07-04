@@ -16,10 +16,12 @@ type Response struct {
 	headers map[string]string
 }
 
+// Headers list response headers
 func (r *Response) Headers() map[string]string {
 	return r.headers
 }
 
+// SetHeader set response header
 func (r *Response) SetHeader(key, value string) {
 	if r.headers == nil {
 		r.headers = make(map[string]string)
@@ -28,6 +30,7 @@ func (r *Response) SetHeader(key, value string) {
 	r.headers[key] = value
 }
 
+// ErrorPayload represents error response payload
 type ErrorPayload struct {
 	Type  string `json:"type"`
 	Title string `json:"title"`
@@ -49,6 +52,7 @@ var (
 	ErrEmailAlreadyRegistered = ErrorPayload{Type: "error:already_registered", Title: "Email already registered"}
 )
 
+// ErrorResponse maps response error
 func ErrorResponse(err error) Response {
 	switch {
 	case errors.Is(err, accounts.ErrInvalidEmail):
@@ -64,6 +68,7 @@ func ErrorResponse(err error) Response {
 	}
 }
 
+// InternalServerError 500
 func InternalServerError(err error) Response {
 	return Response{
 		Status:  http.StatusInternalServerError,
@@ -71,6 +76,8 @@ func InternalServerError(err error) Response {
 		Payload: ErrInternalServerError,
 	}
 }
+
+// NotImplemented 501
 func NotImplemented(err error) Response {
 	return Response{
 		Status:  http.StatusNotImplemented,
@@ -79,18 +86,22 @@ func NotImplemented(err error) Response {
 	}
 }
 
+// BadRequest 400
 func BadRequest(err error, payload ErrorPayload) Response {
 	return genericError(http.StatusBadRequest, err, payload)
 }
 
+// UnprocessableEntity 422
 func UnprocessableEntity(err error, payload ErrorPayload) Response {
 	return genericError(http.StatusUnprocessableEntity, err, payload)
 }
 
+// Conflict 409
 func Conflict(err error, payload ErrorPayload) Response {
 	return genericError(http.StatusConflict, err, payload)
 }
 
+// NotFound 404
 func NotFound(err error, payload ErrorPayload) Response {
 	return genericError(http.StatusNotFound, err, payload)
 }
@@ -103,12 +114,14 @@ func genericError(status int, err error, payload ErrorPayload) Response {
 	}
 }
 
+// NoContent 204
 func NoContent() Response {
 	return Response{
 		Status: http.StatusNoContent,
 	}
 }
 
+// OK 200
 func OK(payload interface{}) Response {
 	return Response{
 		Status:  http.StatusOK,
@@ -116,6 +129,7 @@ func OK(payload interface{}) Response {
 	}
 }
 
+// Created 201
 func Created(payload interface{}) Response {
 	return Response{
 		Status:  http.StatusCreated,
@@ -123,6 +137,7 @@ func Created(payload interface{}) Response {
 	}
 }
 
+// Accepted 202
 func Accepted(payload interface{}) Response {
 	return Response{
 		Status:  http.StatusAccepted,

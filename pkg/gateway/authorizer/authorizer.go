@@ -15,20 +15,18 @@ import (
 	"github.com/google/uuid"
 )
 
-var _ acc_usecase.TokenGenerator = &BearerAuthorizer{}
+var _ acc_usecase.TokenGenerator = &bearerAuthorizer{}
 
-// BearerAuthorizer handles authorization
-type BearerAuthorizer struct {
+type bearerAuthorizer struct {
 	secretKey []byte
 }
 
 // New is the bearer auhtorizer builder
-func New(secretKey string) (*BearerAuthorizer, error) {
-	return &BearerAuthorizer{[]byte(secretKey)}, nil
+func New(secretKey string) (*bearerAuthorizer, error) {
+	return &bearerAuthorizer{[]byte(secretKey)}, nil
 }
 
-// Payload represents token payload
-type Payload struct {
+type payload struct {
 	TokenID   uuid.UUID  `json:"token_id"`
 	UserID    vos.UserID `json:"user_id"`
 	IssuedAt  time.Time  `json:"issued_at"`
@@ -36,15 +34,15 @@ type Payload struct {
 }
 
 // Valid checks if a payload is valid
-func (payload *Payload) Valid() error {
-	if time.Now().After(payload.ExpiredAt) {
+func (p *payload) Valid() error {
+	if time.Now().After(p.ExpiredAt) {
 		return ErrExpiredToken
 	}
 	return nil
 }
 
 // CreateTokens generate both access & refresh tokens
-func (b *BearerAuthorizer) CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error) {
+func (b *bearerAuthorizer) CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error) {
 	const operation = "authorizer.BearerAuthorizer.CreateToken"
 
 	accessToken, err := b.createToken(userID, accessDuration)
@@ -63,7 +61,7 @@ func (b *BearerAuthorizer) CreateTokens(userID vos.UserID, accessDuration time.D
 	}, nil
 }
 
-func (b *BearerAuthorizer) createToken(userID vos.UserID, duration time.Duration) (string, error) {
+func (b *bearerAuthorizer) createToken(userID vos.UserID, duration time.Duration) (string, error) {
 	const operation = "authorizer.createAccessToken"
 
 	tokenID, err := uuid.NewRandom()
@@ -73,14 +71,14 @@ func (b *BearerAuthorizer) createToken(userID vos.UserID, duration time.Duration
 
 	now := time.Now()
 
-	payload := &Payload{
+	p := &payload{
 		TokenID:   tokenID,
 		UserID:    userID,
 		IssuedAt:  now,
 		ExpiredAt: now.Add(duration),
 	}
 
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, p)
 	token, err := jwtToken.SignedString(b.secretKey)
 	if err != nil {
 		return "", domain.Error(operation, err)
@@ -90,7 +88,7 @@ func (b *BearerAuthorizer) createToken(userID vos.UserID, duration time.Duration
 }
 
 // AuthorizeRequest is a middleware that handles request authorization
-func (b *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
+func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
@@ -120,7 +118,7 @@ func (b *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 	})
 }
 
-func (b *BearerAuthorizer) verifyToken(token string) (*Payload, error) {
+func (b *bearerAuthorizer) verifyToken(token string) (*payload, error) {
 	const operation = "authorizer.BearerAuthorizer.VerifyToken"
 
 	keyFunc := func(token *jwt.Token) (interface{}, error) {
@@ -131,7 +129,7 @@ func (b *BearerAuthorizer) verifyToken(token string) (*Payload, error) {
 		return b.secretKey, nil
 	}
 
-	jwtToken, err := jwt.ParseWithClaims(token, &Payload{}, keyFunc)
+	jwtToken, err := jwt.ParseWithClaims(token, &payload{}, keyFunc)
 	if err != nil {
 		return nil, domain.Error(operation, err)
 	}
@@ -144,10 +142,10 @@ func (b *BearerAuthorizer) verifyToken(token string) (*Payload, error) {
 		return nil, domain.Error(operation, ErrInvalidToken)
 	}
 
-	payload, ok := jwtToken.Claims.(*Payload)
+	p, ok := jwtToken.Claims.(*payload)
 	if !ok {
 		return nil, domain.Error(operation, ErrInvalidToken)
 	}
 
-	return payload, nil
+	return p, nil
 }
