@@ -21,6 +21,8 @@ import (
 // @Header 201 {string} Token "X-Request-Id"
 // @Failure 500 "Internal server error"
 // @Router /signup [post]
+
+// CreateAccount handles create account requests
 func (h Handler) CreateAccount(r *http.Request) responses.Response {
 	operation := "accounts.Handler.CreateAccount"
 
@@ -39,6 +41,7 @@ func (h Handler) CreateAccount(r *http.Request) responses.Response {
 	return responses.Created(nil)
 }
 
+// CreateAccountRequest
 type CreateAccountRequest struct {
 	Email    vos.Email    `json:"email"`
 	Password vos.Password `json:"password"`
