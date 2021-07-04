@@ -21,8 +21,6 @@ type Usecase interface {
 type Repository interface {
 	GetAccountByEmail(context.Context, vos.Email) (accounts.Account, error)
 	CreateAccount(context.Context, vos.Email, vos.HashedPassword) (vos.UserID, error)
-	Login(context.Context) error
-	Logout(context.Context) error
 }
 
 // AccountsUsecase represents account's usecase

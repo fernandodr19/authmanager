@@ -12,16 +12,19 @@ import (
 
 var _ usecase.Repository = &AccountRepository{}
 
+// AccountRepository is the repository of accounts
 type AccountRepository struct {
 	Conn *pgx.Conn
 }
 
+// NewAccountRepository builds an account repository
 func NewAccountRepository(db *pgx.Conn) *AccountRepository {
 	return &AccountRepository{
 		Conn: db,
 	}
 }
 
+// GetAccountByEmail gets an account for a given email
 func (r AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Email) (accounts.Account, error) {
 	const operation = "repositories.AccountRepository.GetAccountByEmail"
 
@@ -52,6 +55,7 @@ func (r AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Emai
 	return acc, nil
 }
 
+// CreateAccount creates an account on db
 func (r AccountRepository) CreateAccount(ctx context.Context, email vos.Email, hashedPassword vos.HashedPassword) (vos.UserID, error) {
 	const operation = "repositories.AccountRepository.CreateAccount"
 
@@ -68,12 +72,4 @@ func (r AccountRepository) CreateAccount(ctx context.Context, email vos.Email, h
 	}
 
 	return userID, nil
-}
-
-func (r AccountRepository) Login(context.Context) error {
-	return usecase.ErrNotImplemented
-}
-
-func (r AccountRepository) Logout(context.Context) error {
-	return usecase.ErrNotImplemented
 }
