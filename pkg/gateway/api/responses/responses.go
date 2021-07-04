@@ -9,6 +9,7 @@ import (
 	accounts_uc "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 )
 
+// Response represents an API response
 type Response struct {
 	Status  int
 	Error   error
