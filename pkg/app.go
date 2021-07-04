@@ -3,6 +3,7 @@ package library
 import (
 	"github.com/fernandodr19/library/pkg/config"
 	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/library/pkg/gateway/encrypter"
 	"github.com/fernandodr19/library/pkg/gateway/repositories"
 	"github.com/jackc/pgx/v4"
 )
@@ -15,6 +16,6 @@ func BuildApp(dbConn *pgx.Conn, cfg *config.Config, tokenGenerator accounts.Toke
 	accRepo := repositories.NewAccountRepository(dbConn)
 
 	return &App{
-		Accounts: accounts.NewAccountsUsecase(accRepo, tokenGenerator),
+		Accounts: accounts.NewAccountsUsecase(accRepo, tokenGenerator, encrypter.Encrypter{}),
 	}, nil
 }

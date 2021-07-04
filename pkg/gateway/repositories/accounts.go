@@ -39,7 +39,7 @@ func (r AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Emai
 	err := r.Conn.QueryRow(ctx, cmd, email).
 		Scan(&acc.ID,
 			acc.Email,
-			acc.Password,
+			acc.HashedPassword,
 			acc.CreatedAt,
 			acc.UpdatedAt)
 	if err != nil {

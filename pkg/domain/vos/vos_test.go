@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func Test_EmailValidation(t *testing.T) {
@@ -39,22 +38,4 @@ func Test_EmailValidation(t *testing.T) {
 			assert.Equal(t, tt.Valid, tt.Email.Valid())
 		})
 	}
-}
-
-func Test_PasswordEncryption(t *testing.T) {
-	t.Run("password matches", func(t *testing.T) {
-		p := Password("mypass")
-		hash, err := p.Hashed()
-		require.NoError(t, err)
-		assert.True(t, hash.Mathces(p))
-	})
-
-	t.Run("password does not match", func(t *testing.T) {
-		p := Password("mypass")
-		hash, err := p.Hashed()
-		require.NoError(t, err)
-		p2 := Password("wrongpass")
-		assert.False(t, hash.Mathces(p2))
-	})
-
 }

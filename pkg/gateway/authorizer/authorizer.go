@@ -10,9 +10,12 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/fernandodr19/library/pkg/domain"
 	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
+	acc_usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/google/uuid"
 )
+
+var _ acc_usecase.TokenGenerator = &BearerAuthorizer{}
 
 type BearerAuthorizer struct {
 	secretKey []byte
