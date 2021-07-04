@@ -21,6 +21,7 @@ func getMigrationHandler(dbUrl string) (*migrate.Migrate, error) {
 	return migrate.NewWithSourceInstance("httpfs", source, dbUrl)
 }
 
+// RunMigrations runs postgres migrations
 func RunMigrations(dbUrl string) error {
 	h, err := getMigrationHandler(dbUrl)
 	if err != nil {
