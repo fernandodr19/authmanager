@@ -17,14 +17,17 @@ import (
 
 var _ acc_usecase.TokenGenerator = &BearerAuthorizer{}
 
+// BearerAuthorizer handles authorization
 type BearerAuthorizer struct {
 	secretKey []byte
 }
 
+// New is the bearer auhtorizer builder
 func New(secretKey string) (*BearerAuthorizer, error) {
 	return &BearerAuthorizer{[]byte(secretKey)}, nil
 }
 
+// Payload represents token payload
 type Payload struct {
 	TokenID   uuid.UUID  `json:"token_id"`
 	UserID    vos.UserID `json:"user_id"`
@@ -32,6 +35,7 @@ type Payload struct {
 	ExpiredAt time.Time  `json:"expired_at"`
 }
 
+// Valid checks if a payload is valid
 func (payload *Payload) Valid() error {
 	if time.Now().After(payload.ExpiredAt) {
 		return ErrExpiredToken
@@ -39,6 +43,7 @@ func (payload *Payload) Valid() error {
 	return nil
 }
 
+// Create tokens generate both access & refresh tokens
 func (b *BearerAuthorizer) CreateTokens(userID vos.UserID, accessDuration time.Duration, refreshDuration time.Duration) (vos.Tokens, error) {
 	const operation = "authorizer.BearerAuthorizer.CreateToken"
 
@@ -84,6 +89,7 @@ func (b *BearerAuthorizer) createToken(userID vos.UserID, duration time.Duration
 	return token, nil
 }
 
+// AuthorizeRequest is a middleware that handles request authorization
 func (a *BearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
