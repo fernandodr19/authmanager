@@ -14,6 +14,7 @@ type Config struct {
 	Postgres
 }
 
+// API defines api configuration
 type API struct {
 	Address         string        `envconfig:"SERVER_ADDRESS" default:"0.0.0.0:3000"`
 	SwaggerHost     string        `envconfig:"SWAGGER_HOST" default:"0.0.0.0:3001"`
@@ -21,6 +22,7 @@ type API struct {
 	TokenSecret     string        `envconfig:"TOKEN_SECRET" default:"My Secret"`
 }
 
+// Postgres defines postgres configuration
 type Postgres struct {
 	User     string `envconfig:"DATABASE_USER" default:"postgres"`
 	Password string `envconfig:"DATABASE_PASSWORD" default:"postgres"`
@@ -30,6 +32,7 @@ type Postgres struct {
 	SSLMode  string `envconfig:"DATABASE_SSLMODE" default:"disable"`
 }
 
+// URL builds postgres URL
 func (p Postgres) URL() string {
 	// example: "postgres://username:password@localhost:5432/db_name"
 	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
@@ -42,6 +45,7 @@ func (p Postgres) URL() string {
 	)
 }
 
+// Load loads config
 func Load() (*Config, error) {
 	var config Config
 	noPrefix := ""
