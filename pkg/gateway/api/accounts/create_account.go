@@ -17,8 +17,10 @@ import (
 // @Param Authorization header string true "Bearer Authorization Token"
 // @Accept json
 // @Produce json
-// @Success 201
-// @Header 201 {string} Token "X-Request-Id"
+// @Success 201 "Account successfully created"
+// @Failure 400 "Could not parse request"
+// @Failure 409 "User already registered"
+// @Failure 422 "Request is well formed but contains invalid data"
 // @Failure 500 "Internal server error"
 // @Router /signup [post]
 // CreateAccount handles create account requests

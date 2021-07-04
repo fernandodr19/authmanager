@@ -48,12 +48,12 @@ paths:
       responses:
         "200":
           description: OK
-          headers:
-            Token:
-              description: X-Request-Id
-              type: string
           schema:
             $ref: '#/definitions/accounts.LoginResponse'
+        "401":
+          description: Invalid password
+        "404":
+          description: User not found
         "500":
           description: Internal server error
       summary: Authenticate user credentials
@@ -80,11 +80,13 @@ paths:
       - application/json
       responses:
         "201":
-          description: ""
-          headers:
-            Token:
-              description: X-Request-Id
-              type: string
+          description: Account successfully created
+        "400":
+          description: Could not parse request
+        "409":
+          description: User already registered
+        "422":
+          description: Request is well formed but contains invalid data
         "500":
           description: Internal server error
       summary: Creates an account

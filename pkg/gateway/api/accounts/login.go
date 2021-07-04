@@ -17,7 +17,8 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} LoginResponse
-// @Header 200 {string} Token "X-Request-Id"
+// @Failure 401 "Invalid password"
+// @Failure 404 "User not found"
 // @Failure 500 "Internal server error"
 // @Router /login [post]
 // Login handles login requests

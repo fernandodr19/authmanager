@@ -31,37 +31,41 @@ func (r *Response) SetHeader(key, value string) {
 	r.headers[key] = value
 }
 
+type Error struct {
+	Code        string `json:"code"`
+	Description string `json:"description"`
+}
+
 // ErrorPayload represents error response payload
 type ErrorPayload struct {
-	Type  string `json:"type"`
-	Title string `json:"title"`
+	Error `json:"errors"`
 }
 
 // shared
 var (
-	ErrInternalServerError = ErrorPayload{Type: "error:internal_server_error", Title: "Internal Server Error"}
-	ErrInvalidBody         = ErrorPayload{Type: "error:invalid_body", Title: "Invalid body"}
-	ErrInvalidAuth         = ErrorPayload{Type: "error:invalid_auth", Title: "Invalid authorization"}
-	ErrInvalidParams       = ErrorPayload{Type: "error:invalid_parameters", Title: "Invalid query parameters"}
-	ErrNotImplemented      = ErrorPayload{Type: "error:not_implemented", Title: "Not implemented"}
+	ErrInternalServerError = ErrorPayload{Error: Error{Code: "error:internal_server_error", Description: "Internal Server Error"}}
+	ErrInvalidBody         = ErrorPayload{Error: Error{Code: "error:invalid_body", Description: "Invalid body"}}
+	ErrInvalidAuth         = ErrorPayload{Error: Error{Code: "error:invalid_auth", Description: "Invalid authorization"}}
+	ErrInvalidParams       = ErrorPayload{Error: Error{Code: "error:invalid_parameters", Description: "Invalid query parameters"}}
+	ErrNotImplemented      = ErrorPayload{Error: Error{Code: "error:not_implemented", Description: "Not implemented"}}
 )
 
 // accounts
 var (
-	ErrAccountNotFound        = ErrorPayload{Type: "error:account_not_found", Title: "Account not found"}
-	ErrInvalidEmail           = ErrorPayload{Type: "error:invalid_email", Title: "Invalid email"}
-	ErrInvalidPassword        = ErrorPayload{Type: "error:invalid_password", Title: "Invalid password"}
-	ErrWrongPassword          = ErrorPayload{Type: "error:wrong_password", Title: "Wrong password"}
-	ErrEmailAlreadyRegistered = ErrorPayload{Type: "error:already_registered", Title: "Email already registered"}
+	ErrAccountNotFound        = ErrorPayload{Error: Error{Code: "error:account_not_found", Description: "Account not found"}}
+	ErrInvalidEmail           = ErrorPayload{Error: Error{Code: "error:invalid_email", Description: "Invalid email"}}
+	ErrInvalidPassword        = ErrorPayload{Error: Error{Code: "error:invalid_password", Description: "Invalid password"}}
+	ErrWrongPassword          = ErrorPayload{Error: Error{Code: "error:wrong_password", Description: "Wrong password"}}
+	ErrEmailAlreadyRegistered = ErrorPayload{Error: Error{Code: "error:already_registered", Description: "Email already registered"}}
 )
 
 // ErrorResponse maps response error
 func ErrorResponse(err error) Response {
 	switch {
 	case errors.Is(err, accounts.ErrInvalidEmail):
-		return BadRequest(err, ErrInvalidEmail)
+		return UnprocessableEntity(err, ErrInvalidEmail)
 	case errors.Is(err, accounts.ErrInvalidPassword):
-		return BadRequest(err, ErrInvalidPassword)
+		return UnprocessableEntity(err, ErrInvalidPassword)
 	case errors.Is(err, accounts_uc.ErrNotImplemented):
 		return NotImplemented(err)
 	case errors.Is(err, accounts_uc.ErrEmailAlreadyRegistered):

@@ -57,13 +57,13 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/accounts.LoginResponse"
-                        },
-                        "headers": {
-                            "Token": {
-                                "type": "string",
-                                "description": "X-Request-Id"
-                            }
                         }
+                    },
+                    "401": {
+                        "description": "Invalid password"
+                    },
+                    "404": {
+                        "description": "User not found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -104,13 +104,16 @@ var doc = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
-                        "headers": {
-                            "Token": {
-                                "type": "string",
-                                "description": "X-Request-Id"
-                            }
-                        }
+                        "description": "Account successfully created"
+                    },
+                    "400": {
+                        "description": "Could not parse request"
+                    },
+                    "409": {
+                        "description": "User already registered"
+                    },
+                    "422": {
+                        "description": "Request is well formed but contains invalid data"
                     },
                     "500": {
                         "description": "Internal server error"

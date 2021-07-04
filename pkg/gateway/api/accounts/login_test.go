@@ -12,7 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
 	usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
@@ -20,12 +19,10 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/api/shared"
 )
 
-const JSONContentType = "application/json"
-
-func TestHandler_CreateAccount(t *testing.T) {
+func TestHandler_Login(t *testing.T) {
 	const (
-		routePattern = "/api/v1/signup"
-		target       = "/api/v1/signup"
+		routePattern = "/api/v1/login"
+		target       = "/api/v1/login"
 	)
 
 	request := func(body []byte) *http.Request {
@@ -35,48 +32,38 @@ func TestHandler_CreateAccount(t *testing.T) {
 	testTable := []struct {
 		Name                 string
 		Handler              Handler
-		Req                  CreateAccountRequest
+		Req                  LoginRequest
 		ExpectedStatusCode   int
 		ExpectedErrorPayload responses.ErrorPayload
 	}{
 		{
-			Name:    "sign up happy path",
-			Handler: createHandler(nil),
-			Req: CreateAccountRequest{
+			Name:    "happy path",
+			Handler: loginHandler(nil),
+			Req: LoginRequest{
 				Email:    "valid@gmail.com",
 				Password: "123",
 			},
-			ExpectedStatusCode: http.StatusCreated,
+			ExpectedStatusCode: http.StatusOK,
 		},
 		{
-			Name:    "bad req invalid email",
-			Handler: createHandler(accounts.ErrInvalidEmail),
-			Req: CreateAccountRequest{
-				Email:    "invalid",
-				Password: "123",
-			},
-			ExpectedStatusCode:   http.StatusUnprocessableEntity,
-			ExpectedErrorPayload: responses.ErrInvalidEmail,
-		},
-		{
-			Name:    "bad req invalid password",
-			Handler: createHandler(accounts.ErrInvalidPassword),
-			Req: CreateAccountRequest{
-				Email:    "valid@gmail.com",
-				Password: "",
-			},
-			ExpectedStatusCode:   http.StatusUnprocessableEntity,
-			ExpectedErrorPayload: responses.ErrInvalidPassword,
-		},
-		{
-			Name:    "conflicted email",
-			Handler: createHandler(usecase.ErrEmailAlreadyRegistered),
-			Req: CreateAccountRequest{
+			Name:    "user not found",
+			Handler: loginHandler(usecase.ErrAccountNotFound),
+			Req: LoginRequest{
 				Email:    "valid@gmail.com",
 				Password: "123",
 			},
-			ExpectedStatusCode:   http.StatusConflict,
-			ExpectedErrorPayload: responses.ErrEmailAlreadyRegistered,
+			ExpectedStatusCode:   http.StatusNotFound,
+			ExpectedErrorPayload: responses.ErrAccountNotFound,
+		},
+		{
+			Name:    "wrong password",
+			Handler: loginHandler(usecase.ErrWrongPassword),
+			Req: LoginRequest{
+				Email:    "valid@gmail.com",
+				Password: "123",
+			},
+			ExpectedStatusCode:   http.StatusUnauthorized,
+			ExpectedErrorPayload: responses.ErrWrongPassword,
 		},
 	}
 	for _, tt := range testTable {
@@ -84,7 +71,7 @@ func TestHandler_CreateAccount(t *testing.T) {
 			// prepare
 			response := httptest.NewRecorder()
 			router := mux.NewRouter()
-			router.HandleFunc(routePattern, middleware.Handle(tt.Handler.CreateAccount)).Methods(http.MethodPost)
+			router.HandleFunc(routePattern, middleware.Handle(tt.Handler.Login)).Methods(http.MethodPost)
 
 			body, err := json.Marshal(tt.Req)
 			require.NoError(t, err)
@@ -97,7 +84,7 @@ func TestHandler_CreateAccount(t *testing.T) {
 			assert.NotEmpty(t, response.Header().Get(shared.XReqID))
 			assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
 
-			if response.Code != http.StatusCreated {
+			if response.Code != http.StatusOK {
 				var errPayload responses.ErrorPayload
 				err = json.NewDecoder(response.Body).Decode(&errPayload)
 				require.NoError(t, err)
@@ -107,11 +94,11 @@ func TestHandler_CreateAccount(t *testing.T) {
 	}
 }
 
-func createHandler(err error) Handler {
+func loginHandler(err error) Handler {
 	return Handler{
 		Usecase: &usecase.AccountsMockUsecase{
-			CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) error {
-				return err
+			LoginFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (vos.Tokens, error) {
+				return vos.Tokens{}, err
 			},
 		},
 	}
