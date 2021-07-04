@@ -41,10 +41,10 @@ func (r AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Emai
 	var acc accounts.Account
 	err := r.Conn.QueryRow(ctx, cmd, email).
 		Scan(&acc.ID,
-			acc.Email,
-			acc.HashedPassword,
-			acc.CreatedAt,
-			acc.UpdatedAt)
+			&acc.Email,
+			&acc.HashedPassword,
+			&acc.CreatedAt,
+			&acc.UpdatedAt)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return acc, usecase.ErrAccountNotFound

@@ -48,8 +48,10 @@ var (
 
 // accounts
 var (
+	ErrAccountNotFound        = ErrorPayload{Type: "error:account_not_found", Title: "Account not found"}
 	ErrInvalidEmail           = ErrorPayload{Type: "error:invalid_email", Title: "Invalid email"}
 	ErrInvalidPassword        = ErrorPayload{Type: "error:invalid_password", Title: "Invalid password"}
+	ErrWrongPassword          = ErrorPayload{Type: "error:wrong_password", Title: "Wrong password"}
 	ErrEmailAlreadyRegistered = ErrorPayload{Type: "error:already_registered", Title: "Email already registered"}
 )
 
@@ -64,6 +66,10 @@ func ErrorResponse(err error) Response {
 		return NotImplemented(err)
 	case errors.Is(err, accounts_uc.ErrEmailAlreadyRegistered):
 		return Conflict(err, ErrEmailAlreadyRegistered)
+	case errors.Is(err, accounts_uc.ErrAccountNotFound):
+		return NotFound(err, ErrAccountNotFound)
+	case errors.Is(err, accounts_uc.ErrWrongPassword):
+		return Unauthorized(err, ErrWrongPassword)
 	default:
 		return InternalServerError(err)
 	}
@@ -92,9 +98,14 @@ func BadRequest(err error, payload ErrorPayload) Response {
 	return genericError(http.StatusBadRequest, err, payload)
 }
 
-// UnprocessableEntity 422
-func UnprocessableEntity(err error, payload ErrorPayload) Response {
-	return genericError(http.StatusUnprocessableEntity, err, payload)
+// Unauthorized 401
+func Unauthorized(err error, payload ErrorPayload) Response {
+	return genericError(http.StatusUnauthorized, err, payload)
+}
+
+// NotFound 404
+func NotFound(err error, payload ErrorPayload) Response {
+	return genericError(http.StatusNotFound, err, payload)
 }
 
 // Conflict 409
@@ -102,9 +113,9 @@ func Conflict(err error, payload ErrorPayload) Response {
 	return genericError(http.StatusConflict, err, payload)
 }
 
-// NotFound 404
-func NotFound(err error, payload ErrorPayload) Response {
-	return genericError(http.StatusNotFound, err, payload)
+// UnprocessableEntity 422
+func UnprocessableEntity(err error, payload ErrorPayload) Response {
+	return genericError(http.StatusUnprocessableEntity, err, payload)
 }
 
 func genericError(status int, err error, payload ErrorPayload) Response {

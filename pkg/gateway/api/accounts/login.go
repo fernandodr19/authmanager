@@ -16,11 +16,10 @@ import (
 // @Param Body body LoginRequest true "Body"
 // @Accept json
 // @Produce json
-// @Success 200 {object} CreateAccountResponse
+// @Success 200 {object} LoginResponse
 // @Header 200 {string} Token "X-Request-Id"
 // @Failure 500 "Internal server error"
 // @Router /login [post]
-
 // Login handles login requests
 func (h Handler) Login(r *http.Request) responses.Response {
 	operation := "accounts.Handler.Login"
@@ -32,12 +31,15 @@ func (h Handler) Login(r *http.Request) responses.Response {
 		return responses.BadRequest(domain.Error(operation, err), responses.ErrInvalidBody)
 	}
 
-	err = h.Usecase.CreateAccount(ctx, body.Email, body.Password)
+	tokens, err := h.Usecase.Login(ctx, body.Email, body.Password)
 	if err != nil {
 		return responses.ErrorResponse(domain.Error(operation, err))
 	}
 
-	return responses.Created(nil)
+	return responses.OK(LoginResponse{
+		AccessToken:  tokens.AccessToken,
+		RefreshToken: tokens.RefreshToken,
+	})
 }
 
 // LoginRequest payload

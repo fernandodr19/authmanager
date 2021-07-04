@@ -21,18 +21,22 @@ func (u AccountsUsecase) Login(ctx context.Context, email vos.Email, password vo
 	// retrieve user from db
 	acc, err := u.AccountsRepository.GetAccountByEmail(ctx, email)
 	if err != nil {
-		return tokens, domain.Error(operation, ErrAccountNotFound)
+		if err == ErrAccountNotFound {
+			return tokens, domain.Error(operation, ErrAccountNotFound)
+		}
+		return tokens, domain.Error(operation, err)
 	}
 
 	// check password
 	if !u.Encrypter.PasswordMathces(password, acc.HashedPassword) {
-		return tokens, domain.Error(operation, ErrInvalidPassword)
+		return tokens, domain.Error(operation, ErrWrongPassword)
 	}
 
+	// generate tokens
 	tokens, err = u.TokenGenerator.CreateTokens(acc, 10*time.Minute, 2*time.Hour)
 	if err != nil {
 		return tokens, domain.Error(operation, err)
 	}
 
-	return tokens, ErrNotImplemented
+	return tokens, nil
 }

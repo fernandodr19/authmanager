@@ -35,6 +35,7 @@ type AccountsUsecase struct {
 func NewAccountsUsecase(accRepo Repository, tokenGenerator TokenGenerator, encrypter Encrypter) *AccountsUsecase {
 	return &AccountsUsecase{
 		AccountsRepository: accRepo,
+		TokenGenerator:     tokenGenerator,
 		Encrypter:          encrypter,
 	}
 }
