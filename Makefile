@@ -55,5 +55,5 @@ generate:
 .PHONY: setup-dev
 setup-dev:
 	@echo "Setting up dev environment"
-	docker-compose -f $(DOCKER_COMPOSE_FILE) down
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d
+	@docker-compose -f $(DOCKER_COMPOSE_FILE) down
+	@docker-compose -f $(DOCKER_COMPOSE_FILE) up -d
