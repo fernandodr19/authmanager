@@ -2,7 +2,8 @@ package accounts
 
 import "errors"
 
+//nolint
 var (
-	ErrInvalidEmail    = errors.New("invalid email")    // invalid email
-	ErrInvalidPassword = errors.New("invalid password") // invalid password
+	ErrInvalidEmail    = errors.New("invalid email")
+	ErrInvalidPassword = errors.New("invalid password")
 )
