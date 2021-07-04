@@ -1,5 +1,6 @@
 package vos
 
+//nolint
 type (
 	Password       string
 	HashedPassword string

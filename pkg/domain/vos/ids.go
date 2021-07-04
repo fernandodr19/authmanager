@@ -2,6 +2,7 @@ package vos
 
 import "net/mail"
 
+//nolint
 type (
 	UserID string
 	Email  string
