@@ -9,7 +9,7 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
 )
 
-// Create account
+// CreateAccount handles create account requests
 // @Summary Creates an account
 // @Description Creates an account for a given email.
 // @Tags Accounts
@@ -23,7 +23,6 @@ import (
 // @Failure 422 "Request is well formed but contains invalid data"
 // @Failure 500 "Internal server error"
 // @Router /accounts/signup [post]
-// CreateAccount handles create account requests
 func (h Handler) CreateAccount(r *http.Request) responses.Response {
 	operation := "accounts.Handler.CreateAccount"
 

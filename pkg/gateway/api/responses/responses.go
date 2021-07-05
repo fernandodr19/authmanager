@@ -31,6 +31,7 @@ func (r *Response) SetHeader(key, value string) {
 	r.headers[key] = value
 }
 
+// Error code & description
 type Error struct {
 	Code        string `json:"code"`
 	Description string `json:"description"`

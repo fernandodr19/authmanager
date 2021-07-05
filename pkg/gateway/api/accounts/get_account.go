@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Login
+// GetAccount handles get account requests
 // @Summary Authenticate user credentials
 // @Description Authenticate user credentials.
 // @Tags Accounts
@@ -23,7 +23,6 @@ import (
 // @Failure 404 "User not found"
 // @Failure 500 "Internal server error"
 // @Router /accounts/{acc_id} [get]
-// Login handles login requests
 func (h Handler) GetAccount(r *http.Request) responses.Response {
 	operation := "accounts.Handler.GetAccount"
 

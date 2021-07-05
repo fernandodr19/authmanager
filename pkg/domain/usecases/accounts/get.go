@@ -8,7 +8,7 @@ import (
 	"github.com/fernandodr19/library/pkg/instrumentation/logger"
 )
 
-// Login authenticates the user
+// GetAccountDetaiils retrieves an account for a given user
 func (u AccountsUsecase) GetAccountDetaiils(ctx context.Context) (accounts.Account, error) {
 	const operation = "accounts.AccountsUsecase.GetAccountDetaiils"
 

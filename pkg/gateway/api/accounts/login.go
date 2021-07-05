@@ -9,7 +9,7 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
 )
 
-// Login
+// Login handles login requests
 // @Summary Authenticate user credentials
 // @Description Authenticate user credentials.
 // @Tags Accounts
@@ -21,7 +21,6 @@ import (
 // @Failure 404 "User not found"
 // @Failure 500 "Internal server error"
 // @Router /accounts/login [post]
-// Login handles login requests
 func (h Handler) Login(r *http.Request) responses.Response {
 	operation := "accounts.Handler.Login"
 

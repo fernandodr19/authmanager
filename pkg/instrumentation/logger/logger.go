@@ -9,7 +9,7 @@ import (
 
 type ctxKey string
 
-const LoggerCtxKey ctxKey = "logget-ctx-key"
+const loggerCtxKey ctxKey = "logget-ctx-key"
 
 var defaultLogger *logrus.Entry
 
@@ -34,7 +34,7 @@ func Default() *logrus.Entry {
 
 // FromCtx retrives logger from context (inserted by api middleware)
 func FromCtx(ctx context.Context) *logrus.Entry {
-	logger := ctx.Value(LoggerCtxKey)
+	logger := ctx.Value(loggerCtxKey)
 
 	if logger == nil {
 		// Fallback to deafault if nil
@@ -46,5 +46,5 @@ func FromCtx(ctx context.Context) *logrus.Entry {
 
 // ToCtx returns a new context with the provided logger
 func ToCtx(ctx context.Context, logger *logrus.Entry) context.Context {
-	return context.WithValue(ctx, LoggerCtxKey, logger)
+	return context.WithValue(ctx, loggerCtxKey, logger)
 }
