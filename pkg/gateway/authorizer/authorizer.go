@@ -95,7 +95,6 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
-			// TODO use responses package maybe?
 			resp := responses.Unauthorized(nil, responses.ErrMissingAuthHeader)
 			responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
 			return
@@ -103,7 +102,6 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 
 		splitedAuthHeader := strings.Split(authHeader, " ")
 		if len(splitedAuthHeader) != 2 {
-			// TODO use responses package maybe?
 			resp := responses.Unauthorized(nil, responses.ErrInvalidAuthHeader)
 			responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
 			return
@@ -113,7 +111,13 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 
 		payload, err := b.verifyToken(token)
 		if err != nil {
-			w.WriteHeader(http.StatusUnauthorized)
+			if errors.Is(err, ErrExpiredToken) {
+				resp := responses.Unauthorized(nil, responses.ErrExpiredToken)
+				responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
+				return
+			}
+			resp := responses.Unauthorized(nil, responses.ErrUnauthorized)
+			responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
 			return
 		}
 
@@ -125,7 +129,7 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 }
 
 func (b *bearerAuthorizer) verifyToken(token string) (*payload, error) {
-	const operation = "authorizer.BearerAuthorizer.VerifyToken"
+	const operation = "authorizer.bearerAuthorizer.verifyToken"
 
 	keyFunc := func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
@@ -136,10 +140,6 @@ func (b *bearerAuthorizer) verifyToken(token string) (*payload, error) {
 	}
 
 	jwtToken, err := jwt.ParseWithClaims(token, &payload{}, keyFunc)
-	if err != nil {
-		return nil, domain.Error(operation, err)
-	}
-
 	if err != nil {
 		verr, ok := err.(*jwt.ValidationError)
 		if ok && errors.Is(verr.Inner, ErrExpiredToken) {

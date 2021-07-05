@@ -47,7 +47,7 @@ func main() {
 	if err != nil {
 		logger.WithError(err).Fatal("failed building authorizer")
 	}
-	t, _ := auth.CreateTokens(accounts.Account{ID: "3d5a5c6a-d589-4e7f-9269-f5346fc40549"}, 3000*time.Second, 3000*time.Second)
+	t, _ := auth.CreateTokens(accounts.Account{ID: "3d5a5c6a-d589-4e7f-9269-f5346fc40549"}, 1*time.Second, 3000*time.Second)
 	fmt.Println(t.AccessToken)
 
 	// Build app

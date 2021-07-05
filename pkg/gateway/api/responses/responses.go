@@ -49,6 +49,8 @@ var (
 	ErrNotImplemented      = ErrorPayload{Error: Error{Code: "error:not_implemented", Description: "Not implemented"}}
 	ErrMissingAuthHeader   = ErrorPayload{Error: Error{Code: "error:missing_auth_header", Description: "Missing auth header"}}
 	ErrInvalidAuthHeader   = ErrorPayload{Error: Error{Code: "error:invalid_auth_header", Description: "Invalid auth header"}}
+	ErrExpiredToken        = ErrorPayload{Error: Error{Code: "error:expired_token", Description: "Expired token"}}
+	ErrUnauthorized        = ErrorPayload{Error: Error{Code: "error:unauthorized", Description: "Unauthorized"}}
 )
 
 // accounts
