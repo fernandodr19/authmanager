@@ -9,7 +9,7 @@ import (
 
 type ctxKey string
 
-const loggerCtxKey ctxKey = "logget-ctx-key"
+const loggerCtxKey ctxKey = "logger-ctx-key"
 
 var defaultLogger *logrus.Entry
 

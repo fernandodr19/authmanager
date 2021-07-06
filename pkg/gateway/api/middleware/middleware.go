@@ -26,8 +26,6 @@ func Cors(r *mux.Router) http.Handler {
 }
 
 // TrimSlashSuffix Removes the trailing slash from request, except if it is the root url.
-// If the url is https://www.google.com/api or https://www.google.com/api/ both will match.
-// This was done as gorilla mux default method for this doesn't support POST requests: https://github.com/gorilla/mux/issues/30
 func TrimSlashSuffix(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	if r.URL.Path != "/" {
 		r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
@@ -36,20 +34,29 @@ func TrimSlashSuffix(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 	next.ServeHTTP(w, r)
 }
 
+func AssureRequestID(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+	// create req id if none is provided
+	reqID := w.Header().Get(shared.XReqID)
+	if reqID == "" {
+		reqID = uuid.NewString()
+		w.Header().Set(shared.XReqID, reqID)
+	}
+
+	log := logger.Default().WithField(shared.XReqID, reqID)
+	ctx := logger.ToCtx(r.Context(), log)
+
+	next.ServeHTTP(w, r.WithContext(ctx))
+}
+
 // Handle middleware function to treat rest responses.
 func Handle(handler func(r *http.Request) responses.Response) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// create req id if none is provided
-		reqID := w.Header().Get(shared.XReqID)
-		if reqID == "" {
-			reqID = uuid.NewString()
-			w.Header().Set(shared.XReqID, reqID)
-		}
+		// handles request
+		response := handler(r)
 
-		log := logger.Default().WithField(shared.XReqID, reqID)
-		ctx := logger.ToCtx(r.Context(), log)
+		// post application precessing...
+		log := logger.FromCtx(r.Context())
 
-		response := handler(r.WithContext(ctx))
 		if response.Error != nil {
 			err := response.Error
 			log.Error(err)

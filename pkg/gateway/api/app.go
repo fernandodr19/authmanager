@@ -29,6 +29,7 @@ func BuildHandler(app *library.App, cfg *config.Config, auth middleware.Authoriz
 	recovery.PrintStack = false
 	n := negroni.New()
 	n.UseFunc(middleware.TrimSlashSuffix)
+	n.UseFunc(middleware.AssureRequestID)
 	n.UseHandler(middleware.Cors(r))
 
 	return n, nil

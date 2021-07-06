@@ -13,6 +13,7 @@ import (
 	acc_usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
+	"github.com/fernandodr19/library/pkg/instrumentation/logger"
 	"github.com/google/uuid"
 )
 
@@ -95,6 +96,7 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
+			logger.FromCtx(r.Context()).Infoln("missing token")
 			resp := responses.Unauthorized(nil, responses.ErrMissingAuthHeader)
 			responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
 			return
@@ -102,6 +104,7 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 
 		splitedAuthHeader := strings.Split(authHeader, " ")
 		if len(splitedAuthHeader) != 2 {
+			logger.FromCtx(r.Context()).Infoln("invalid token")
 			resp := responses.Unauthorized(nil, responses.ErrInvalidAuthHeader)
 			responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
 			return
@@ -111,6 +114,7 @@ func (b *bearerAuthorizer) AuthorizeRequest(h http.Handler) http.Handler {
 
 		payload, err := b.verifyToken(token)
 		if err != nil {
+			logger.FromCtx(r.Context()).WithError(err).Infoln("unauthorized")
 			if errors.Is(err, ErrExpiredToken) {
 				resp := responses.Unauthorized(nil, responses.ErrExpiredToken)
 				responses.SendJSON(w, resp.Payload, http.StatusUnauthorized)
