@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -14,7 +13,6 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/authorizer"
 	"github.com/fernandodr19/library/pkg/gateway/repositories"
 	"github.com/fernandodr19/library/pkg/instrumentation/logger"
-	"github.com/jackc/pgx/v4"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -38,7 +36,7 @@ func main() {
 	}
 
 	// Init postgres
-	pgConn, err := setupPostgres(cfg.Postgres)
+	pgConn, err := repositories.NewConnection(cfg.Postgres)
 	if err != nil {
 		logger.WithError(err).Fatal("failed setting up postgres")
 	}
@@ -76,19 +74,5 @@ func serveApp(apiHandler http.Handler, cfg *config.Config) {
 
 	logger.Default().WithField("address", cfg.API.Address).Info("server starting...")
 	logger.Default().Fatal(server.ListenAndServe())
-}
 
-func setupPostgres(cfg config.Postgres) (*pgx.Conn, error) {
-	// Maybe use connection pool later on..
-	conn, err := pgx.Connect(context.Background(), cfg.URL())
-	if err != nil {
-		return nil, err
-	}
-
-	err = repositories.RunMigrations(cfg.URL())
-	if err != nil {
-		return nil, err
-	}
-
-	return conn, nil
 }
