@@ -34,15 +34,14 @@ func TrimSlashSuffix(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 	next.ServeHTTP(w, r)
 }
 
+// AssureRequestID create a request id if none ir proveided and insert a logger with it on context
 func AssureRequestID(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	// create req id if none is provided
 	reqID := w.Header().Get(shared.XReqID)
 	if reqID == "" {
 		reqID = uuid.NewString()
 		w.Header().Set(shared.XReqID, reqID)
 	}
 
-	// insert log with req id on context
 	log := logger.Default().WithField(shared.XReqID, reqID)
 	ctx := logger.ToCtx(r.Context(), log)
 
