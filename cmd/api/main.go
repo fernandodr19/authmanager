@@ -36,7 +36,7 @@ func main() {
 	}
 
 	// Init postgres
-	pgConn, err := repositories.NewConnection(cfg.Postgres)
+	dbConn, err := repositories.NewConnection(cfg.Postgres)
 	if err != nil {
 		logger.WithError(err).Fatal("failed setting up postgres")
 	}
@@ -50,7 +50,7 @@ func main() {
 	fmt.Println(t.AccessToken)
 
 	// Build app
-	app, err := app.BuildApp(pgConn, cfg, auth)
+	app, err := app.BuildApp(dbConn, cfg, auth)
 	if err != nil {
 		logger.WithError(err).Fatal("failed building app")
 	}
