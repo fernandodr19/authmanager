@@ -43,6 +43,7 @@ func main() {
 		logger.WithError(err).Fatal("failed setting up postgres")
 	}
 
+	// Init authorizer
 	auth, err := authorizer.New(cfg.API.TokenSecret)
 	if err != nil {
 		logger.WithError(err).Fatal("failed building authorizer")

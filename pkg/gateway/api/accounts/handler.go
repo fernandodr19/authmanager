@@ -32,9 +32,5 @@ func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase,
 		auth.AuthorizeRequest(middleware.Handle(h.GetAccount))).
 		Methods(http.MethodGet)
 
-	// public.Handle("/do-something-auth",
-	// 	auth.AuthorizeRequest(middleware.Handle(h.CreateAccount))).
-	// 	Methods(http.MethodGet)
-
 	return h
 }
