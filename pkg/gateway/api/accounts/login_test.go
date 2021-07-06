@@ -16,7 +16,6 @@ import (
 	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
-	"github.com/fernandodr19/library/pkg/gateway/api/shared"
 )
 
 func TestHandler_Login(t *testing.T) {
@@ -81,7 +80,6 @@ func TestHandler_Login(t *testing.T) {
 
 			//assert
 			assert.Equal(t, tt.ExpectedStatusCode, response.Code)
-			assert.NotEmpty(t, response.Header().Get(shared.XReqID))
 			assert.Equal(t, JSONContentType, response.Header().Get("content-type"))
 
 			if response.Code != http.StatusOK {
