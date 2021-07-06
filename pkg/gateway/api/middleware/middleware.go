@@ -42,6 +42,7 @@ func AssureRequestID(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 		w.Header().Set(shared.XReqID, reqID)
 	}
 
+	// insert log with req id on context
 	log := logger.Default().WithField(shared.XReqID, reqID)
 	ctx := logger.ToCtx(r.Context(), log)
 
