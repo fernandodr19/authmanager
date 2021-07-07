@@ -43,6 +43,7 @@ test-coverage:
 	@richgo test -failfast -coverprofile=coverage.out ./...
 	@go tool cover -html=coverage.out -o coverage.html
 
+### remove sqlc-dev binary once new tag is released on https://github.com/kyleconroy/sqlc
 .PHONY: generate
 generate:
 	@echo "Go Generating"
@@ -50,6 +51,7 @@ generate:
 	go get -u github.com/swaggo/swag/cmd/swag@v1.6.7
 	go generate ./...
 	swag init -g ./cmd/api/main.go -o ./docs/swagger
+	@./pkg/gateway/repositories/sqlc/config/sqlc-dev generate -f ./pkg/gateway/repositories/sqlc/config/sqlc.yaml
 	go mod tidy
 
 .PHONY: setup-dev
