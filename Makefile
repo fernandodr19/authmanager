@@ -4,6 +4,7 @@ OS ?= linux
 GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_BUILD_TIME=$(shell date '+%Y-%m-%d__%I:%M:%S%p')
 DOCKER_COMPOSE_FILE=docker-compose.yml
+SQLC_CONFIG_FILE=pkg/gateway/repositories/sqlc/config/sqlc.yaml
 
 .PHONY: test
 test:
@@ -51,7 +52,7 @@ generate:
 	go get -u github.com/swaggo/swag/cmd/swag@v1.6.7
 	go generate ./...
 	swag init -g ./cmd/api/main.go -o ./docs/swagger
-	@./pkg/gateway/repositories/sqlc/config/sqlc-dev generate -f ./pkg/gateway/repositories/sqlc/config/sqlc.yaml
+	@./pkg/gateway/repositories/sqlc/config/sqlc-dev generate -f $(SQLC_CONFIG_FILE)
 	go mod tidy
 
 .PHONY: setup-dev
