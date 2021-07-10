@@ -93,13 +93,6 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/accounts.CreateAccountRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer Authorization Token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {

@@ -103,11 +103,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/accounts.CreateAccountRequest'
-      - description: Bearer Authorization Token
-        in: header
-        name: Authorization
-        required: true
-        type: string
       produces:
       - application/json
       responses:
