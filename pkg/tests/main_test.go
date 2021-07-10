@@ -107,6 +107,6 @@ func Test_SignUp(t *testing.T) {
 	defer resp.Body.Close()
 
 	// assert
-	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.Equal(t, http.StatusCreated, resp.StatusCode)
 
 }
