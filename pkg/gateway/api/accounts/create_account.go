@@ -14,7 +14,6 @@ import (
 // @Description Creates an account for a given email.
 // @Tags Accounts
 // @Param Body body CreateAccountRequest true "Body"
-// @Param Authorization header string true "Bearer Authorization Token"
 // @Accept json
 // @Produce json
 // @Success 201 "Account successfully created"
