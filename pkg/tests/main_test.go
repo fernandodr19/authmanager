@@ -2,11 +2,13 @@ package tests
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"os/exec"
 	"strings"
 	"testing"
 	"time"
@@ -46,7 +48,60 @@ func setup() func() {
 	// Load config
 	cfg, err := config.Load()
 	if err != nil {
-		logger.WithError(err).Panic("failed loading config")
+		logger.WithError(err).Fatal("failed loading config")
+	}
+
+	err = setupDocker()
+	if err != nil {
+		logger.WithError(err).Fatal("failed setting up docker")
+	}
+
+	// Setup postgres
+	cfg.Postgres.DBName = "test"
+	cfg.Postgres.Port = "5433"
+	dbConn, err := setupPostgres(cfg.Postgres)
+	if err != nil {
+		logger.WithError(err).Fatal("failed setting up postgres")
+	}
+
+	// Init authorizer
+	auth, err := authorizer.New(cfg.API.TokenSecret)
+	if err != nil {
+		logger.WithError(err).Fatal("failed building authorizer")
+	}
+
+	// Build app
+	app, err := app.BuildApp(dbConn, cfg, auth)
+	if err != nil {
+		logger.WithError(err).Fatal("failed building app")
+	}
+
+	// Build API handler
+	apiHandler, err := api.BuildHandler(app, cfg, auth)
+	if err != nil {
+		logger.WithError(err).Fatal("Could not initialize api")
+	}
+
+	testEnv.Server = httptest.NewServer(apiHandler)
+
+	return func() {
+		TruncatePostgresTables(dbConn)
+	}
+}
+
+// https://medium.com/trendyol-tech/kafka-test-containers-with-golang-b85e4b2469db
+
+func setupDocker() error {
+	running, err := isDockerRunning([]string{
+		"pg-test",
+	})
+	if err != nil {
+		return err
+	}
+
+	if running {
+		logger.Default().Infoln("necessary containers already running...")
+		return nil
 	}
 
 	compose := testcontainers.NewLocalDockerCompose(
@@ -55,49 +110,40 @@ func setup() func() {
 	)
 	execErr := compose.WithCommand([]string{"up", "-d"}).Invoke()
 	if execErr.Error != nil {
-		logger.WithError(execErr.Error).Panic("failed compose up")
+		return execErr.Error
 	}
-
-	// Setup postgres
-	dbConn, err := setupPostgres(cfg.Postgres)
-	if err != nil {
-		logger.WithError(err).Panic("failed setting up postgres")
-	}
-
-	// Init authorizer
-	auth, err := authorizer.New(cfg.API.TokenSecret)
-	if err != nil {
-		logger.WithError(err).Panic("failed building authorizer")
-	}
-
-	// Build app
-	app, err := app.BuildApp(dbConn, cfg, auth)
-	if err != nil {
-		logger.WithError(err).Panic("failed building app")
-	}
-
-	// Build API handler
-	apiHandler, err := api.BuildHandler(app, cfg, auth)
-	if err != nil {
-		logger.WithError(err).Panic("Could not initialize api")
-	}
-
-	testEnv.Server = httptest.NewServer(apiHandler)
-
-	return func() {
-		compose.Down()
-	}
+	return nil
 }
 
-// https://medium.com/trendyol-tech/kafka-test-containers-with-golang-b85e4b2469db
+func isDockerRunning(expectedImages []string) (bool, error) {
+	stdout, err := exec.Command("docker", "ps").Output()
+	if err != nil {
+		return false, err
+	}
+
+	ps := string(stdout)
+	if err != nil {
+		return false, err
+	}
+
+	running := true
+	for _, image := range expectedImages {
+		if !strings.Contains(ps, image) {
+			running = false
+			break
+		}
+	}
+	return running, nil
+}
 
 func setupPostgres(cfg config.Postgres) (*pgx.Conn, error) {
-	done := make(chan struct{})
+	done := make(chan bool, 1)
 	var dbConn *pgx.Conn
+	var err error
 
+	// tries to connect within 5 seconds timeout
 	go func() {
 		for {
-			var err error
 			dbConn, err = repositories.NewConnection(cfg)
 			if err != nil {
 				time.Sleep(500 * time.Millisecond)
@@ -110,7 +156,7 @@ func setupPostgres(cfg config.Postgres) (*pgx.Conn, error) {
 
 	select {
 	case <-time.After(5 * time.Second):
-		return nil, errors.New("timed out trying to set up postgres")
+		return nil, fmt.Errorf("timed out trying to set up postgres: %w", err)
 	case <-done:
 	}
 
@@ -136,5 +182,12 @@ func Test_SignUp(t *testing.T) {
 
 	// assert
 	require.Equal(t, http.StatusCreated, resp.StatusCode)
+}
 
+func TruncatePostgresTables(conn *pgx.Conn) {
+	conn.Exec(context.Background(),
+		`TRUNCATE TABLE 
+			accounts
+		CASCADE`,
+	)
 }

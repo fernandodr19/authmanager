@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  postgres-db:
-    container_name: postgres-db-test
+  pg-test:
+    container_name: pg-test
     image: postgres:13.2
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
-      POSTGRES_DB: dev
+      POSTGRES_DB: test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
