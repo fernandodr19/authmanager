@@ -3,6 +3,7 @@ package tests
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -18,6 +19,7 @@ import (
 	"github.com/fernandodr19/library/pkg/gateway/repositories"
 	"github.com/fernandodr19/library/pkg/instrumentation/logger"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v4"
 	"github.com/stretchr/testify/require"
 	"github.com/testcontainers/testcontainers-go"
 
@@ -47,18 +49,19 @@ func setup() func() {
 		logger.WithError(err).Panic("failed loading config")
 	}
 
-	pgContainer := testcontainers.NewLocalDockerCompose(
+	compose := testcontainers.NewLocalDockerCompose(
 		[]string{"./docker-compose.yml"},
 		strings.ToLower(uuid.New().String()),
 	)
-	pgContainer.WithCommand([]string{"up", "-d"}).Invoke()
-	// pgContainer.W([]string{"database system is ready to accept connections"})
-	time.Sleep(5 * time.Second)
+	execErr := compose.WithCommand([]string{"up", "-d"}).Invoke()
+	if execErr.Error != nil {
+		logger.WithError(execErr.Error).Panic("failed compose up")
+	}
 
-	// Init postgres
-	dbConn, err := repositories.NewConnection(cfg.Postgres)
+	// Setup postgres
+	dbConn, err := setupPostgres(cfg.Postgres)
 	if err != nil {
-		logger.WithError(err).Fatal("failed setting up postgres")
+		logger.WithError(err).Panic("failed setting up postgres")
 	}
 
 	// Init authorizer
@@ -82,12 +85,37 @@ func setup() func() {
 	testEnv.Server = httptest.NewServer(apiHandler)
 
 	return func() {
-		pgContainer.Down()
-		time.Sleep(1 * time.Second)
+		compose.Down()
 	}
 }
 
 // https://medium.com/trendyol-tech/kafka-test-containers-with-golang-b85e4b2469db
+
+func setupPostgres(cfg config.Postgres) (*pgx.Conn, error) {
+	done := make(chan struct{})
+	var dbConn *pgx.Conn
+
+	go func() {
+		for {
+			var err error
+			dbConn, err = repositories.NewConnection(cfg)
+			if err != nil {
+				time.Sleep(500 * time.Millisecond)
+				continue
+			}
+			break
+		}
+		close(done)
+	}()
+
+	select {
+	case <-time.After(5 * time.Second):
+		return nil, errors.New("timed out trying to set up postgres")
+	case <-done:
+	}
+
+	return dbConn, nil
+}
 
 func Test_SignUp(t *testing.T) {
 	target := testEnv.Server.URL + "/api/v1/accounts/signup"
