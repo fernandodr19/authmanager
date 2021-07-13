@@ -10,7 +10,7 @@ import (
 
 // App contains application's usecases
 type App struct {
-	Accounts accounts.Usecase
+	Accounts *accounts.AccountsUsecase
 }
 
 // BuildApp builds application

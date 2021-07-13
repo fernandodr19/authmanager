@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/fernandodr19/library/pkg/gateway/api/accounts"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -58,4 +59,40 @@ func Test_Login(t *testing.T) {
 
 	// assert
 	require.Equal(t, http.StatusOK, resp.StatusCode)
+
+	var respBody accounts.LoginResponse
+	err = json.NewDecoder(resp.Body).Decode(&respBody)
+	require.NoError(t, err)
+
+	assert.NotEmpty(t, respBody.AccessToken)
+	assert.NotEmpty(t, respBody.RefreshToken)
 }
+
+// func Test_GetAccDetails(t *testing.T) {
+// 	defer TruncatePostgresTables()
+
+// 	ctx := context.Background()
+// 	err := testEnv.App.Accounts.CreateAccount(ctx, "bbb@test.com", "32111")
+// 	require.NoError(t, err)
+
+// 	testEnv.App.Accounts.
+
+// 	target := testEnv.Server.URL + "/api/v1/accounts/login"
+// 	body, err := json.Marshal(
+// 		accounts.LoginRequest{
+// 			Email:    "bbb@test.com",
+// 			Password: "32111",
+// 		})
+// 	require.NoError(t, err)
+
+// 	req, err := http.NewRequest(http.MethodPost, target, bytes.NewBuffer(body))
+// 	require.NoError(t, err)
+
+// 	// test
+// 	resp, err := http.DefaultClient.Do(req)
+// 	require.NoError(t, err)
+// 	defer resp.Body.Close()
+
+// 	// assert
+// 	require.Equal(t, http.StatusOK, resp.StatusCode)
+// }

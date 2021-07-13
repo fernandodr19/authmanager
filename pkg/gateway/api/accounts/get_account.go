@@ -19,7 +19,6 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} LoginResponse
-// @Failure 401 "Invalid password"
 // @Failure 404 "User not found"
 // @Failure 500 "Internal server error"
 // @Router /accounts/{acc_id} [get]
