@@ -31,12 +31,13 @@ func (h Handler) Login(r *http.Request) responses.Response {
 		return responses.BadRequest(domain.Error(operation, err), responses.ErrInvalidBody)
 	}
 
-	tokens, err := h.Usecase.Login(ctx, body.Email, body.Password)
+	accID, tokens, err := h.Usecase.Login(ctx, body.Email, body.Password)
 	if err != nil {
 		return responses.ErrorResponse(domain.Error(operation, err))
 	}
 
 	return responses.OK(LoginResponse{
+		AccountID:    accID,
 		AccessToken:  tokens.AccessToken,
 		RefreshToken: tokens.RefreshToken,
 	})
@@ -50,6 +51,7 @@ type LoginRequest struct {
 
 // LoginResponse payload
 type LoginResponse struct {
+	AccountID    vos.AccID        `json:"account_id"`
 	AccessToken  vos.AccessToken  `json:"access_token"`
 	RefreshToken vos.RefreshToken `json:"refresh_token"`
 }

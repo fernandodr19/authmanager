@@ -14,8 +14,8 @@ var _ Usecase = &AccountsUsecase{}
 
 // Usecase of accounts
 type Usecase interface {
-	CreateAccount(context.Context, vos.Email, vos.Password) error
-	Login(context.Context, vos.Email, vos.Password) (vos.Tokens, error)
+	CreateAccount(context.Context, vos.Email, vos.Password) (vos.AccID, error)
+	Login(context.Context, vos.Email, vos.Password) (vos.AccID, vos.Tokens, error)
 	GetAccountDetaiils(context.Context) (accounts.Account, error)
 	// TODO: Logout
 	// GetAccountDetails
@@ -25,7 +25,7 @@ type Usecase interface {
 // Repository of accounts
 type Repository interface {
 	GetAccountByEmail(context.Context, vos.Email) (accounts.Account, error)
-	CreateAccount(context.Context, vos.Email, vos.HashedPassword) (vos.UserID, error)
+	CreateAccount(context.Context, vos.Email, vos.HashedPassword) (vos.AccID, error)
 }
 
 // AccountsUsecase represents account's usecase

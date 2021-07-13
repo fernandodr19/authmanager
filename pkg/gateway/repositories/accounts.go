@@ -44,7 +44,7 @@ func (r AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Emai
 
 func mapRawAcc(a sqlc.Account) accounts.Account {
 	return accounts.Account{
-		ID:             vos.UserID(a.ID.String()),
+		ID:             vos.AccID(a.ID.String()),
 		Email:          vos.Email(a.Email),
 		HashedPassword: vos.HashedPassword(a.Password),
 		CreatedAt:      a.CreatedAt,
@@ -53,7 +53,7 @@ func mapRawAcc(a sqlc.Account) accounts.Account {
 }
 
 // CreateAccount creates an account on db
-func (r AccountRepository) CreateAccount(ctx context.Context, email vos.Email, hashedPassword vos.HashedPassword) (vos.UserID, error) {
+func (r AccountRepository) CreateAccount(ctx context.Context, email vos.Email, hashedPassword vos.HashedPassword) (vos.AccID, error) {
 	const operation = "repositories.AccountRepository.CreateAccount"
 
 	id, err := r.q.CreateAccount(ctx, sqlc.CreateAccountParams{
@@ -64,5 +64,5 @@ func (r AccountRepository) CreateAccount(ctx context.Context, email vos.Email, h
 		return "", domain.Error(operation, err)
 	}
 
-	return vos.UserID(id.String()), nil
+	return vos.AccID(id.String()), nil
 }

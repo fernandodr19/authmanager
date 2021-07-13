@@ -29,10 +29,10 @@ func New(secretKey string) (*bearerAuthorizer, error) {
 }
 
 type payload struct {
-	TokenID   uuid.UUID  `json:"token_id"`
-	UserID    vos.UserID `json:"user_id"`
-	IssuedAt  time.Time  `json:"issued_at"`
-	ExpiredAt time.Time  `json:"expired_at"`
+	TokenID   uuid.UUID `json:"token_id"`
+	UserID    vos.AccID `json:"user_id"`
+	IssuedAt  time.Time `json:"issued_at"`
+	ExpiredAt time.Time `json:"expired_at"`
 }
 
 // Valid checks if a payload is valid
@@ -65,7 +65,7 @@ func (b *bearerAuthorizer) CreateTokens(acc accounts.Account, accessDuration tim
 	}, nil
 }
 
-func (b *bearerAuthorizer) createToken(userID vos.UserID, duration time.Duration) (string, error) {
+func (b *bearerAuthorizer) createToken(userID vos.AccID, duration time.Duration) (string, error) {
 	const operation = "authorizer.createAccessToken"
 
 	tokenID, err := uuid.NewRandom()

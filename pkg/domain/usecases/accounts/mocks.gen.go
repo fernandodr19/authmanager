@@ -16,13 +16,13 @@ import (
 //
 // 		// make and configure a mocked Usecase
 // 		mockedUsecase := &AccountsMockUsecase{
-// 			CreateAccountFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) error {
+// 			CreateAccountFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, error) {
 // 				panic("mock out the CreateAccount method")
 // 			},
 // 			GetAccountDetaiilsFunc: func(contextMoqParam context.Context) (accounts.Account, error) {
 // 				panic("mock out the GetAccountDetaiils method")
 // 			},
-// 			LoginFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error) {
+// 			LoginFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, vos.Tokens, error) {
 // 				panic("mock out the Login method")
 // 			},
 // 		}
@@ -33,13 +33,13 @@ import (
 // 	}
 type AccountsMockUsecase struct {
 	// CreateAccountFunc mocks the CreateAccount method.
-	CreateAccountFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) error
+	CreateAccountFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, error)
 
 	// GetAccountDetaiilsFunc mocks the GetAccountDetaiils method.
 	GetAccountDetaiilsFunc func(contextMoqParam context.Context) (accounts.Account, error)
 
 	// LoginFunc mocks the Login method.
-	LoginFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error)
+	LoginFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, vos.Tokens, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -73,7 +73,7 @@ type AccountsMockUsecase struct {
 }
 
 // CreateAccount calls CreateAccountFunc.
-func (mock *AccountsMockUsecase) CreateAccount(contextMoqParam context.Context, email vos.Email, password vos.Password) error {
+func (mock *AccountsMockUsecase) CreateAccount(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, error) {
 	callInfo := struct {
 		ContextMoqParam context.Context
 		Email           vos.Email
@@ -88,9 +88,10 @@ func (mock *AccountsMockUsecase) CreateAccount(contextMoqParam context.Context, 
 	mock.lockCreateAccount.Unlock()
 	if mock.CreateAccountFunc == nil {
 		var (
-			errOut error
+			accIDOut vos.AccID
+			errOut   error
 		)
-		return errOut
+		return accIDOut, errOut
 	}
 	return mock.CreateAccountFunc(contextMoqParam, email, password)
 }
@@ -150,7 +151,7 @@ func (mock *AccountsMockUsecase) GetAccountDetaiilsCalls() []struct {
 }
 
 // Login calls LoginFunc.
-func (mock *AccountsMockUsecase) Login(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.Tokens, error) {
+func (mock *AccountsMockUsecase) Login(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, vos.Tokens, error) {
 	callInfo := struct {
 		ContextMoqParam context.Context
 		Email           vos.Email
@@ -165,10 +166,11 @@ func (mock *AccountsMockUsecase) Login(contextMoqParam context.Context, email vo
 	mock.lockLogin.Unlock()
 	if mock.LoginFunc == nil {
 		var (
+			accIDOut  vos.AccID
 			tokensOut vos.Tokens
 			errOut    error
 		)
-		return tokensOut, errOut
+		return accIDOut, tokensOut, errOut
 	}
 	return mock.LoginFunc(contextMoqParam, email, password)
 }

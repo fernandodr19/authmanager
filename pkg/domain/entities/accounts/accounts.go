@@ -6,10 +6,10 @@ import (
 	"github.com/fernandodr19/library/pkg/domain/vos"
 )
 
-const UserIDContextKey vos.UserID = "user-id-context-key"
+const UserIDContextKey vos.AccID = "user-id-context-key"
 
 type Account struct {
-	ID             vos.UserID
+	ID             vos.AccID
 	Email          vos.Email
 	Password       vos.Password
 	HashedPassword vos.HashedPassword

@@ -95,8 +95,8 @@ func TestHandler_Login(t *testing.T) {
 func loginHandler(err error) Handler {
 	return Handler{
 		Usecase: &usecase.AccountsMockUsecase{
-			LoginFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (vos.Tokens, error) {
-				return vos.Tokens{}, err
+			LoginFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (vos.AccID, vos.Tokens, error) {
+				return "", vos.Tokens{}, err
 			},
 		},
 	}

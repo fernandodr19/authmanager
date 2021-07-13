@@ -150,9 +150,6 @@ var doc = `{
                             "$ref": "#/definitions/accounts.LoginResponse"
                         }
                     },
-                    "401": {
-                        "description": "Invalid password"
-                    },
                     "404": {
                         "description": "User not found"
                     },
@@ -190,6 +187,9 @@ var doc = `{
             "type": "object",
             "properties": {
                 "access_token": {
+                    "type": "string"
+                },
+                "account_id": {
                     "type": "string"
                 },
                 "refresh_token": {

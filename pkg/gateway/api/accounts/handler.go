@@ -28,7 +28,7 @@ func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase,
 		middleware.Handle(h.Login)).
 		Methods(http.MethodPost)
 
-	public.Handle("/accounts/{acc_id}",
+	public.Handle("/accounts/{account_id}",
 		auth.AuthorizeRequest(middleware.Handle(h.GetAccount))).
 		Methods(http.MethodGet)
 

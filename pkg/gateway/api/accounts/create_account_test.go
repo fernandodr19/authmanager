@@ -108,8 +108,8 @@ func TestHandler_CreateAccount(t *testing.T) {
 func createHandler(err error) Handler {
 	return Handler{
 		Usecase: &usecase.AccountsMockUsecase{
-			CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) error {
-				return err
+			CreateAccountFunc: func(in1 context.Context, in2 vos.Email, in3 vos.Password) (vos.AccID, error) {
+				return "", err
 			},
 		},
 	}

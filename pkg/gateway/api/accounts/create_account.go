@@ -32,7 +32,7 @@ func (h Handler) CreateAccount(r *http.Request) responses.Response {
 		return responses.BadRequest(domain.Error(operation, err), responses.ErrInvalidBody)
 	}
 
-	err = h.Usecase.CreateAccount(ctx, body.Email, body.Password)
+	_, err = h.Usecase.CreateAccount(ctx, body.Email, body.Password)
 	if err != nil {
 		return responses.ErrorResponse(domain.Error(operation, err))
 	}

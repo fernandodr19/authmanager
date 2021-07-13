@@ -38,7 +38,7 @@ func Test_Login(t *testing.T) {
 	defer TruncatePostgresTables()
 
 	ctx := context.Background()
-	err := testEnv.App.Accounts.CreateAccount(ctx, "bbb@test.com", "32111")
+	_, err := testEnv.App.Accounts.CreateAccount(ctx, "bbb@test.com", "32111")
 	require.NoError(t, err)
 
 	target := testEnv.Server.URL + "/api/v1/accounts/login"

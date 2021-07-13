@@ -6,11 +6,11 @@ import (
 
 //nolint
 type (
-	UserID string
-	Email  string
+	AccID string
+	Email string
 )
 
-func (id UserID) String() string {
+func (id AccID) String() string {
 	return string(id)
 }
 
