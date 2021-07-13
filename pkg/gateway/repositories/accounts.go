@@ -42,9 +42,24 @@ func (r AccountRepository) GetAccountByEmail(ctx context.Context, email vos.Emai
 	return mapRawAcc(rawAcc), nil
 }
 
+// GetAccountByID gets an account for a given ID
+func (r AccountRepository) GetAccountByID(ctx context.Context, accID vos.AccID) (accounts.Account, error) {
+	const operation = "repositories.AccountRepository.GetAccountByEmail"
+
+	rawAcc, err := r.q.GetAccountByID(ctx, accID.String())
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return accounts.Account{}, usecase.ErrAccountNotFound
+		}
+		return accounts.Account{}, domain.Error(operation, err)
+	}
+
+	return mapRawAcc(rawAcc), nil
+}
+
 func mapRawAcc(a sqlc.Account) accounts.Account {
 	return accounts.Account{
-		ID:             vos.AccID(a.ID.String()),
+		ID:             vos.AccID(a.ID),
 		Email:          vos.Email(a.Email),
 		HashedPassword: vos.HashedPassword(a.Password),
 		CreatedAt:      a.CreatedAt,
@@ -64,5 +79,5 @@ func (r AccountRepository) CreateAccount(ctx context.Context, email vos.Email, h
 		return "", domain.Error(operation, err)
 	}
 
-	return vos.AccID(id.String()), nil
+	return vos.AccID(id), nil
 }

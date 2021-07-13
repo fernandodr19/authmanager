@@ -114,7 +114,7 @@ var doc = `{
                 }
             }
         },
-        "/accounts/{acc_id}": {
+        "/accounts/{account_id}": {
             "get": {
                 "description": "Authenticate user credentials.",
                 "consumes": [
@@ -147,7 +147,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/accounts.LoginResponse"
+                            "$ref": "#/definitions/accounts.GetAccountResponse"
                         }
                     },
                     "404": {
@@ -168,6 +168,20 @@ var doc = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "accounts.GetAccountResponse": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
                     "type": "string"
                 }
             }

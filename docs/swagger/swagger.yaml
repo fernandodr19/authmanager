@@ -7,6 +7,15 @@ definitions:
       password:
         type: string
     type: object
+  accounts.GetAccountResponse:
+    properties:
+      account_id:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+    type: object
   accounts.LoginRequest:
     properties:
       email:
@@ -33,7 +42,7 @@ info:
   title: Swagger library API
   version: "1.0"
 paths:
-  /accounts/{acc_id}:
+  /accounts/{account_id}:
     get:
       consumes:
       - application/json
@@ -55,7 +64,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/accounts.LoginResponse'
+            $ref: '#/definitions/accounts.GetAccountResponse'
         "404":
           description: User not found
         "500":

@@ -5,8 +5,6 @@ package sqlc
 
 import (
 	"context"
-
-	"github.com/google/uuid"
 )
 
 const createAccount = `-- name: CreateAccount :one
@@ -20,9 +18,9 @@ type CreateAccountParams struct {
 	Password string `json:"password"`
 }
 
-func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (uuid.UUID, error) {
+func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (string, error) {
 	row := q.db.QueryRow(ctx, createAccount, arg.Email, arg.Password)
-	var id uuid.UUID
+	var id string
 	err := row.Scan(&id)
 	return id, err
 }
@@ -35,6 +33,25 @@ WHERE email = $1
 
 func (q *Queries) GetAccountByEmail(ctx context.Context, email string) (Account, error) {
 	row := q.db.QueryRow(ctx, getAccountByEmail, email)
+	var i Account
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Password,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getAccountByID = `-- name: GetAccountByID :one
+SELECT id, email, password, created_at, updated_at
+FROM accounts
+WHERE id = $1
+`
+
+func (q *Queries) GetAccountByID(ctx context.Context, id string) (Account, error) {
+	row := q.db.QueryRow(ctx, getAccountByID, id)
 	var i Account
 	err := row.Scan(
 		&i.ID,

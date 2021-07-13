@@ -1,10 +1,11 @@
 package accounts
 
 import (
-	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/fernandodr19/library/pkg/domain"
+	"github.com/fernandodr19/library/pkg/domain/vos"
 	"github.com/fernandodr19/library/pkg/gateway/api/responses"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -18,28 +19,34 @@ import (
 // @Param acc_id path string true "Account ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} LoginResponse
+// @Success 200 {object} GetAccountResponse
 // @Failure 404 "User not found"
 // @Failure 500 "Internal server error"
-// @Router /accounts/{acc_id} [get]
+// @Router /accounts/{account_id} [get]
 func (h Handler) GetAccount(r *http.Request) responses.Response {
 	operation := "accounts.Handler.GetAccount"
 
 	ctx := r.Context()
 
-	accID, err := uuid.Parse(mux.Vars(r)["acc_id"])
+	accID, err := uuid.Parse(mux.Vars(r)["account_id"])
 	if err != nil {
 		return responses.BadRequest(domain.Error(operation, err), responses.ErrInvalidUserID)
 	}
 
-	fmt.Println(accID)
-
-	acc, err := h.Usecase.GetAccountDetaiils(ctx)
+	acc, err := h.Usecase.GetAccountDetaiils(ctx, vos.AccID(accID.String()))
 	if err != nil {
 		return responses.ErrorResponse(domain.Error(operation, err))
 	}
 
-	fmt.Print(acc)
+	return responses.OK(GetAccountResponse{
+		AccountID: acc.ID,
+		Email:     acc.Email,
+		CratedAt:  acc.CreatedAt,
+	})
+}
 
-	return responses.OK(nil)
+type GetAccountResponse struct {
+	AccountID vos.AccID `json:"account_id"`
+	Email     vos.Email `json:"email"`
+	CratedAt  time.Time `json:"created_at"`
 }

@@ -43,7 +43,7 @@ func (u AccountsUsecase) CreateAccount(ctx context.Context, email vos.Email, pas
 		return "", domain.Error(operation, err)
 	}
 
-	log.WithField("useID", userID).Infoln("account created")
+	log.WithField("accID", userID).Infoln("account created")
 
 	return userID, nil
 }

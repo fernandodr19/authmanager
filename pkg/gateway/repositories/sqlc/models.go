@@ -4,12 +4,10 @@ package sqlc
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Account struct {
-	ID        uuid.UUID `json:"id"`
+	ID        string    `json:"id"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`

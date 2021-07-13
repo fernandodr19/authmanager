@@ -19,7 +19,7 @@ import (
 // 			CreateAccountFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, error) {
 // 				panic("mock out the CreateAccount method")
 // 			},
-// 			GetAccountDetaiilsFunc: func(contextMoqParam context.Context) (accounts.Account, error) {
+// 			GetAccountDetaiilsFunc: func(contextMoqParam context.Context, accID vos.AccID) (accounts.Account, error) {
 // 				panic("mock out the GetAccountDetaiils method")
 // 			},
 // 			LoginFunc: func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, vos.Tokens, error) {
@@ -36,7 +36,7 @@ type AccountsMockUsecase struct {
 	CreateAccountFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, error)
 
 	// GetAccountDetaiilsFunc mocks the GetAccountDetaiils method.
-	GetAccountDetaiilsFunc func(contextMoqParam context.Context) (accounts.Account, error)
+	GetAccountDetaiilsFunc func(contextMoqParam context.Context, accID vos.AccID) (accounts.Account, error)
 
 	// LoginFunc mocks the Login method.
 	LoginFunc func(contextMoqParam context.Context, email vos.Email, password vos.Password) (vos.AccID, vos.Tokens, error)
@@ -56,6 +56,8 @@ type AccountsMockUsecase struct {
 		GetAccountDetaiils []struct {
 			// ContextMoqParam is the contextMoqParam argument value.
 			ContextMoqParam context.Context
+			// AccID is the accID argument value.
+			AccID vos.AccID
 		}
 		// Login holds details about calls to the Login method.
 		Login []struct {
@@ -116,11 +118,13 @@ func (mock *AccountsMockUsecase) CreateAccountCalls() []struct {
 }
 
 // GetAccountDetaiils calls GetAccountDetaiilsFunc.
-func (mock *AccountsMockUsecase) GetAccountDetaiils(contextMoqParam context.Context) (accounts.Account, error) {
+func (mock *AccountsMockUsecase) GetAccountDetaiils(contextMoqParam context.Context, accID vos.AccID) (accounts.Account, error) {
 	callInfo := struct {
 		ContextMoqParam context.Context
+		AccID           vos.AccID
 	}{
 		ContextMoqParam: contextMoqParam,
+		AccID:           accID,
 	}
 	mock.lockGetAccountDetaiils.Lock()
 	mock.calls.GetAccountDetaiils = append(mock.calls.GetAccountDetaiils, callInfo)
@@ -132,7 +136,7 @@ func (mock *AccountsMockUsecase) GetAccountDetaiils(contextMoqParam context.Cont
 		)
 		return accountOut, errOut
 	}
-	return mock.GetAccountDetaiilsFunc(contextMoqParam)
+	return mock.GetAccountDetaiilsFunc(contextMoqParam, accID)
 }
 
 // GetAccountDetaiilsCalls gets all the calls that were made to GetAccountDetaiils.
@@ -140,9 +144,11 @@ func (mock *AccountsMockUsecase) GetAccountDetaiils(contextMoqParam context.Cont
 //     len(mockedUsecase.GetAccountDetaiilsCalls())
 func (mock *AccountsMockUsecase) GetAccountDetaiilsCalls() []struct {
 	ContextMoqParam context.Context
+	AccID           vos.AccID
 } {
 	var calls []struct {
 		ContextMoqParam context.Context
+		AccID           vos.AccID
 	}
 	mock.lockGetAccountDetaiils.RLock()
 	calls = mock.calls.GetAccountDetaiils
