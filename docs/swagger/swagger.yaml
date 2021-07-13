@@ -46,7 +46,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Authenticate user credentials.
+      description: Get account details for a given ID.
       parameters:
       - description: Bearer Authorization Token
         in: header
@@ -55,7 +55,7 @@ paths:
         type: string
       - description: Account ID
         in: path
-        name: acc_id
+        name: account_id
         required: true
         type: string
       produces:
@@ -69,7 +69,7 @@ paths:
           description: User not found
         "500":
           description: Internal server error
-      summary: Authenticate user credentials
+      summary: Get account details
       tags:
       - Accounts
   /accounts/login:

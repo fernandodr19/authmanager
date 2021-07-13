@@ -116,7 +116,7 @@ var doc = `{
         },
         "/accounts/{account_id}": {
             "get": {
-                "description": "Authenticate user credentials.",
+                "description": "Get account details for a given ID.",
                 "consumes": [
                     "application/json"
                 ],
@@ -126,7 +126,7 @@ var doc = `{
                 "tags": [
                     "Accounts"
                 ],
-                "summary": "Authenticate user credentials",
+                "summary": "Get account details",
                 "parameters": [
                     {
                         "type": "string",
@@ -138,7 +138,7 @@ var doc = `{
                     {
                         "type": "string",
                         "description": "Account ID",
-                        "name": "acc_id",
+                        "name": "account_id",
                         "in": "path",
                         "required": true
                     }

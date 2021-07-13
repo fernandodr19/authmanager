@@ -12,11 +12,11 @@ import (
 )
 
 // GetAccount handles get account requests
-// @Summary Authenticate user credentials
-// @Description Authenticate user credentials.
+// @Summary Get account details
+// @Description Get account details for a given ID.
 // @Tags Accounts
 // @Param Authorization header string true "Bearer Authorization Token"
-// @Param acc_id path string true "Account ID"
+// @Param account_id path string true "Account ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} GetAccountResponse

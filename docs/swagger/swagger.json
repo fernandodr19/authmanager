@@ -104,7 +104,7 @@
         },
         "/accounts/{account_id}": {
             "get": {
-                "description": "Authenticate user credentials.",
+                "description": "Get account details for a given ID.",
                 "consumes": [
                     "application/json"
                 ],
@@ -114,7 +114,7 @@
                 "tags": [
                     "Accounts"
                 ],
-                "summary": "Authenticate user credentials",
+                "summary": "Get account details",
                 "parameters": [
                     {
                         "type": "string",
@@ -126,7 +126,7 @@
                     {
                         "type": "string",
                         "description": "Account ID",
-                        "name": "acc_id",
+                        "name": "account_id",
                         "in": "path",
                         "required": true
                     }
