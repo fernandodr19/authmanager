@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/fernandodr19/library/pkg/domain"
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/instrumentation/logger"
+	"github.com/fernandodr19/authmanager/pkg/domain"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/instrumentation/logger"
 )
 
 // Login authenticates the user

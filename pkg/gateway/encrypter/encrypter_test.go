@@ -3,7 +3,7 @@ package encrypter
 import (
 	"testing"
 
-	"github.com/fernandodr19/library/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -5,8 +5,8 @@ package accounts
 
 import (
 	"context"
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
 	"sync"
 )
 

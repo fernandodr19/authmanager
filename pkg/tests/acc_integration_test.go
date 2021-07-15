@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/gateway/api/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/accounts"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

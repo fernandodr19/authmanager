@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/fernandodr19/library/pkg/domain"
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/gateway/api/responses"
+	"github.com/fernandodr19/authmanager/pkg/domain"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/responses"
 )
 
 // CreateAccount handles create account requests

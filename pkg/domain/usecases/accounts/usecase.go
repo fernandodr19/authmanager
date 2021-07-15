@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
 )
 
 //go:generate moq -skip-ensure -stub -out mocks.gen.go . Usecase:AccountsMockUsecase

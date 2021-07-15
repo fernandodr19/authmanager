@@ -12,10 +12,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
-	"github.com/fernandodr19/library/pkg/gateway/api/responses"
+	usecase "github.com/fernandodr19/authmanager/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/middleware"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/responses"
 )
 
 func TestHandler_Login(t *testing.T) {

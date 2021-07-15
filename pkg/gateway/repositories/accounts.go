@@ -3,11 +3,11 @@ package repositories
 import (
 	"context"
 
-	"github.com/fernandodr19/library/pkg/domain"
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/gateway/repositories/sqlc"
+	"github.com/fernandodr19/authmanager/pkg/domain"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	usecase "github.com/fernandodr19/authmanager/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/gateway/repositories/sqlc"
 	"github.com/jackc/pgx/v4"
 )
 

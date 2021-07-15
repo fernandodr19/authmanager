@@ -229,8 +229,8 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "localhost:3000",
 	BasePath:    "/api/v1",
 	Schemes:     []string{"http"},
-	Title:       "Swagger library API",
-	Description: "Documentation Library API",
+	Title:       "Swagger Authorization Manager API",
+	Description: "Documentation Authorization Manager API",
 }
 
 type s struct{}

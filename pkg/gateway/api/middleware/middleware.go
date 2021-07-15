@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fernandodr19/library/pkg/gateway/api/responses"
-	"github.com/fernandodr19/library/pkg/gateway/api/shared"
-	"github.com/fernandodr19/library/pkg/instrumentation/logger"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/responses"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/shared"
+	"github.com/fernandodr19/authmanager/pkg/instrumentation/logger"
 	"github.com/google/uuid"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/fernandodr19/library/pkg/config"
+	"github.com/fernandodr19/authmanager/pkg/config"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres" // needed to describe db driver
 	"github.com/golang-migrate/migrate/v4/source/httpfs"

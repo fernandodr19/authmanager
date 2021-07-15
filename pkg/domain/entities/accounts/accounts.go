@@ -3,7 +3,7 @@ package accounts
 import (
 	"time"
 
-	"github.com/fernandodr19/library/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
 )
 
 const UserIDContextKey vos.AccID = "user-id-context-key"

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	accounts_uc "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	accounts_uc "github.com/fernandodr19/authmanager/pkg/domain/usecases/accounts"
 )
 
 // Response represents an API response

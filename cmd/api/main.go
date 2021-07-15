@@ -5,26 +5,26 @@ import (
 	"net/http"
 	"time"
 
-	_ "github.com/fernandodr19/library/docs/swagger"
-	app "github.com/fernandodr19/library/pkg"
-	"github.com/fernandodr19/library/pkg/config"
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	"github.com/fernandodr19/library/pkg/gateway/api"
-	"github.com/fernandodr19/library/pkg/gateway/authorizer"
-	"github.com/fernandodr19/library/pkg/gateway/repositories"
-	"github.com/fernandodr19/library/pkg/instrumentation/logger"
+	_ "github.com/fernandodr19/authmanager/docs/swagger"
+	app "github.com/fernandodr19/authmanager/pkg"
+	"github.com/fernandodr19/authmanager/pkg/config"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api"
+	"github.com/fernandodr19/authmanager/pkg/gateway/authorizer"
+	"github.com/fernandodr19/authmanager/pkg/gateway/repositories"
+	"github.com/fernandodr19/authmanager/pkg/instrumentation/logger"
 
 	_ "github.com/joho/godotenv/autoload"
 )
 
-// @title Swagger library API
+// @title Swagger Authorization Manager API
 // @version 1.0
 // @host localhost:3000
 // @basePath /api/v1
 // @schemes http
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT
-// @description Documentation Library API
+// @description Documentation Authorization Manager API
 func main() {
 	logger := logger.Default()
 	logger.Infof("build info: time[%s] git_hash[%s]", BuildTime, BuildGitCommit)

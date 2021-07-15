@@ -1,10 +1,10 @@
 package app
 
 import (
-	"github.com/fernandodr19/library/pkg/config"
-	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
-	"github.com/fernandodr19/library/pkg/gateway/encrypter"
-	"github.com/fernandodr19/library/pkg/gateway/repositories"
+	"github.com/fernandodr19/authmanager/pkg/config"
+	"github.com/fernandodr19/authmanager/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authmanager/pkg/gateway/encrypter"
+	"github.com/fernandodr19/authmanager/pkg/gateway/repositories"
 	"github.com/jackc/pgx/v4"
 )
 

@@ -12,11 +12,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
-	"github.com/fernandodr19/library/pkg/gateway/api/responses"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	usecase "github.com/fernandodr19/authmanager/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/middleware"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/responses"
 )
 
 const JSONContentType = "application/json"

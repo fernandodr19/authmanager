@@ -8,12 +8,12 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/fernandodr19/library/pkg/domain"
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	acc_usecase "github.com/fernandodr19/library/pkg/domain/usecases/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/gateway/api/responses"
-	"github.com/fernandodr19/library/pkg/instrumentation/logger"
+	"github.com/fernandodr19/authmanager/pkg/domain"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	acc_usecase "github.com/fernandodr19/authmanager/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/responses"
+	"github.com/fernandodr19/authmanager/pkg/instrumentation/logger"
 	"github.com/google/uuid"
 )
 

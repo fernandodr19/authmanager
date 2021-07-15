@@ -9,7 +9,7 @@ import (
 
 // Config defines the service configuration
 type Config struct {
-	AppName string `envconfig:"APP_NAME" default:"library"`
+	AppName string `envconfig:"APP_NAME" default:"authmanager"`
 	API
 	Postgres
 }

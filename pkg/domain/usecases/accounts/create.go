@@ -3,10 +3,10 @@ package accounts
 import (
 	"context"
 
-	"github.com/fernandodr19/library/pkg/domain"
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
-	"github.com/fernandodr19/library/pkg/instrumentation/logger"
+	"github.com/fernandodr19/authmanager/pkg/domain"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/instrumentation/logger"
 )
 
 // CreateAccount creates a brand new account for a given user

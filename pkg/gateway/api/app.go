@@ -3,10 +3,10 @@ package api
 import (
 	"net/http"
 
-	library "github.com/fernandodr19/library/pkg"
-	"github.com/fernandodr19/library/pkg/config"
-	"github.com/fernandodr19/library/pkg/gateway/api/accounts"
-	"github.com/fernandodr19/library/pkg/gateway/api/middleware"
+	app "github.com/fernandodr19/authmanager/pkg"
+	"github.com/fernandodr19/authmanager/pkg/config"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/accounts"
+	"github.com/fernandodr19/authmanager/pkg/gateway/api/middleware"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	http_swagger "github.com/swaggo/http-swagger"
@@ -14,12 +14,12 @@ import (
 )
 
 // BuildHandler builds api handler
-func BuildHandler(app *library.App, cfg *config.Config, auth middleware.Authorizer) (http.Handler, error) {
+func BuildHandler(app *app.App, cfg *config.Config, auth middleware.Authorizer) (http.Handler, error) {
 	r := mux.NewRouter()
 
 	r.PathPrefix("/metrics").Handler(promhttp.Handler()).Methods(http.MethodGet)
 	r.PathPrefix("/healthcheck").HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusOK) }).Methods(http.MethodGet)
-	r.PathPrefix("/docs/v1/library/swagger").Handler(http_swagger.WrapHandler).Methods(http.MethodGet)
+	r.PathPrefix("/docs/v1/authmanager/swagger").Handler(http_swagger.WrapHandler).Methods(http.MethodGet)
 
 	publicV1 := r.PathPrefix("/api/v1").Subrouter()
 	adminV1 := r.PathPrefix("/admin/v1").Subrouter()

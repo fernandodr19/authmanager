@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fernandodr19/library/pkg/domain/entities/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/entities/accounts"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -4,8 +4,8 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "Documentation Library API",
-        "title": "Swagger library API",
+        "description": "Documentation Authorization Manager API",
+        "title": "Swagger Authorization Manager API",
         "contact": {},
         "license": {
             "name": "MIT",

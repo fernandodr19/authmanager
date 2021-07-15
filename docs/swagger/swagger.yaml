@@ -35,11 +35,11 @@ definitions:
 host: localhost:3000
 info:
   contact: {}
-  description: Documentation Library API
+  description: Documentation Authorization Manager API
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  title: Swagger library API
+  title: Swagger Authorization Manager API
   version: "1.0"
 paths:
   /accounts/{account_id}:

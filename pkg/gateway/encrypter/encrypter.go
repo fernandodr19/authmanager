@@ -1,8 +1,8 @@
 package encrypter
 
 import (
-	"github.com/fernandodr19/library/pkg/domain/usecases/accounts"
-	"github.com/fernandodr19/library/pkg/domain/vos"
+	"github.com/fernandodr19/authmanager/pkg/domain/usecases/accounts"
+	"github.com/fernandodr19/authmanager/pkg/domain/vos"
 	"golang.org/x/crypto/bcrypt"
 )
 
