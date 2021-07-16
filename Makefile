@@ -1,4 +1,4 @@
-NAME_API=app
+NAME_API=authmanager-api
 VERSION=dev
 OS ?= linux
 GIT_COMMIT=$(shell git rev-parse HEAD)
