@@ -17,6 +17,12 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
+// Injected on build time by Makefile
+var (
+	BuildGitCommit = "undefined"
+	BuildTime      = "undefined"
+)
+
 // @title Swagger Authorization Manager API
 // @version 1.0
 // @host localhost:3000
