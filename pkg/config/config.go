@@ -29,18 +29,26 @@ type Postgres struct {
 	Host     string `envconfig:"DATABASE_HOST" default:"localhost"`
 	Port     string `envconfig:"DATABASE_PORT" default:"5432"`
 	DBName   string `envconfig:"DATABASE_NAME" default:"dev"`
+	SSLMode  string `envconfig:"DATABASE_SSLMODE" default:"sslmode=disable"`
 }
 
 // URL builds postgres URL
 func (p Postgres) URL() string {
 	// example: "postgres://username:password@localhost:5432/db_name"
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
 		p.User,
 		p.Password,
 		p.Host,
 		p.Port,
 		p.DBName,
 	)
+
+	// built separately since some systems don't support it
+	if p.SSLMode != "" {
+		url = fmt.Sprintf("%s?%s", url, p.SSLMode)
+	}
+
+	return url
 }
 
 // Load loads config
