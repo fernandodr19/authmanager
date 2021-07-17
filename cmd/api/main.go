@@ -67,12 +67,12 @@ func main() {
 func serveApp(apiHandler http.Handler, cfg *config.Config) {
 	server := &http.Server{
 		Handler:      apiHandler,
-		Addr:         cfg.API.Address,
+		Addr:         cfg.API.Address(),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
 
-	logger.Default().WithField("address", cfg.API.Address).Info("server starting...")
+	logger.Default().WithField("address", cfg.API.Address()).Info("server starting...")
 	logger.Default().Fatal(server.ListenAndServe())
 
 }
