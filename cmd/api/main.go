@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/fernandodr19/authmanager/docs/swagger"
 	_ "github.com/fernandodr19/authmanager/docs/swagger"
 	app "github.com/fernandodr19/authmanager/pkg"
 	"github.com/fernandodr19/authmanager/pkg/config"
@@ -34,6 +35,8 @@ func main() {
 	if err != nil {
 		logger.WithError(err).Fatal("failed loading config")
 	}
+
+	swagger.SwaggerInfo.Host = cfg.Swagger.Host
 
 	// Init postgres
 	dbConn, err := repositories.NewConnection(cfg.Postgres)

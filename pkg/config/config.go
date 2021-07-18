@@ -11,19 +11,24 @@ import (
 type Config struct {
 	AppName string `envconfig:"APP_NAME" default:"authmanager"`
 	API
+	Swagger
 	Postgres
 }
 
 // API defines api configuration
 type API struct {
 	Port            string        `envconfig:"PORT" default:"3000"`
-	SwaggerHost     string        `envconfig:"SWAGGER_HOST" default:"0.0.0.0:3001"`
 	ShutdownTimeout time.Duration `envconfig:"APP_SHUTDOWN_TIMEOUT" default:"5s"`
 	TokenSecret     string        `envconfig:"TOKEN_SECRET" default:"My Secret"`
 }
 
+// Address returns API address
 func (a API) Address() string {
 	return fmt.Sprintf(":%s", a.Port)
+}
+
+type Swagger struct {
+	Host string `envconfig:"SWAGGER_HOST" default:"0.0.0.0:3000"`
 }
 
 // Postgres defines postgres configuration
