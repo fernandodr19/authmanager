@@ -20,7 +20,7 @@ func NewHandler(public *mux.Router, admin *mux.Router, usecase accounts.Usecase,
 		Usecase: usecase,
 	}
 
-	public.Handle("/accounts/signup",
+	public.Handle("/accounts",
 		middleware.Handle(h.CreateAccount)).
 		Methods(http.MethodPost)
 

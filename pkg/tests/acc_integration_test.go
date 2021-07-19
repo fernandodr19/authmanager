@@ -14,9 +14,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test_SignUp(t *testing.T) {
+func Test_CreateAccount(t *testing.T) {
 	defer TruncatePostgresTables()
-	target := testEnv.Server.URL + "/api/v1/accounts/signup"
+	target := testEnv.Server.URL + "/api/v1/accounts"
 	body, err := json.Marshal(
 		accounts.CreateAccountRequest{
 			Email:    "aaat@test.com",

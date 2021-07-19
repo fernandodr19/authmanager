@@ -42,6 +42,34 @@ info:
   title: Swagger Authorization Manager API
   version: "1.0"
 paths:
+  /accounts:
+    post:
+      consumes:
+      - application/json
+      description: Creates an account for a given email.
+      parameters:
+      - description: Body
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/accounts.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Account successfully created
+        "400":
+          description: Could not parse request
+        "409":
+          description: User already registered
+        "422":
+          description: Request is well formed but contains invalid data
+        "500":
+          description: Internal server error
+      summary: Creates an account
+      tags:
+      - Accounts
   /accounts/{account_id}:
     get:
       consumes:
@@ -98,34 +126,6 @@ paths:
         "500":
           description: Internal server error
       summary: Authenticate user credentials
-      tags:
-      - Accounts
-  /accounts/signup:
-    post:
-      consumes:
-      - application/json
-      description: Creates an account for a given email.
-      parameters:
-      - description: Body
-        in: body
-        name: Body
-        required: true
-        schema:
-          $ref: '#/definitions/accounts.CreateAccountRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Account successfully created
-        "400":
-          description: Could not parse request
-        "409":
-          description: User already registered
-        "422":
-          description: Request is well formed but contains invalid data
-        "500":
-          description: Internal server error
-      summary: Creates an account
       tags:
       - Accounts
 schemes:

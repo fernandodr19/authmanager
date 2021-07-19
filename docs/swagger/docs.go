@@ -28,6 +28,49 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/accounts": {
+            "post": {
+                "description": "Creates an account for a given email.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Creates an account",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/accounts.CreateAccountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Account successfully created"
+                    },
+                    "400": {
+                        "description": "Could not parse request"
+                    },
+                    "409": {
+                        "description": "User already registered"
+                    },
+                    "422": {
+                        "description": "Request is well formed but contains invalid data"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/accounts/login": {
             "post": {
                 "description": "Authenticate user credentials.",
@@ -64,49 +107,6 @@ var doc = `{
                     },
                     "404": {
                         "description": "User not found"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/accounts/signup": {
-            "post": {
-                "description": "Creates an account for a given email.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Accounts"
-                ],
-                "summary": "Creates an account",
-                "parameters": [
-                    {
-                        "description": "Body",
-                        "name": "Body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/accounts.CreateAccountRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Account successfully created"
-                    },
-                    "400": {
-                        "description": "Could not parse request"
-                    },
-                    "409": {
-                        "description": "User already registered"
-                    },
-                    "422": {
-                        "description": "Request is well formed but contains invalid data"
                     },
                     "500": {
                         "description": "Internal server error"

@@ -23,8 +23,8 @@ const JSONContentType = "application/json"
 
 func TestHandler_CreateAccount(t *testing.T) {
 	const (
-		routePattern = "/api/v1/accounts/signup"
-		target       = "/api/v1/accounts/signup"
+		routePattern = "/api/v1/accounts"
+		target       = "/api/v1/accounts"
 	)
 
 	request := func(body []byte) *http.Request {
