@@ -93,6 +93,8 @@ $ tree
 ----------------------------------
 
 ### TODOs
-- Postgres (maybe with sqlc)
+- JWE for login
+- Pass recovery (OTP..) 
+- Idempotency (with redis)
+- Policies, actions, resources, scopes..
 - Kafka/RabbitMQ
-- Redis
