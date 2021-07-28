@@ -20,7 +20,7 @@ import (
 // @version 1.0
 // @host localhost:3000
 // @basePath /api/v1
-// @schemes http
+// @schemes http https
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT
 // @description Documentation Authorization Manager API
@@ -73,5 +73,4 @@ func serveApp(apiHandler http.Handler, cfg *config.Config) {
 
 	logger.Default().WithField("address", cfg.API.Address()).Info("server starting...")
 	logger.Default().Fatal(server.ListenAndServe())
-
 }

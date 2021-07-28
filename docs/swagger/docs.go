@@ -228,7 +228,7 @@ var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
 	Host:        "localhost:3000",
 	BasePath:    "/api/v1",
-	Schemes:     []string{"http"},
+	Schemes:     []string{"http", "https"},
 	Title:       "Swagger Authorization Manager API",
 	Description: "Documentation Authorization Manager API",
 }
