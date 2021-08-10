@@ -93,8 +93,10 @@ $ tree
 ----------------------------------
 
 ### TODOs
+- break into 2 microservices (resource manager & accounts)
 - JWE for login
 - Pass recovery (OTP..) 
+- 2FA
 - Idempotency (with redis)
 - Policies, actions, resources, scopes..
 - Kafka/RabbitMQ
