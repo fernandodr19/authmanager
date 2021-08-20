@@ -52,7 +52,8 @@ generate:
 	go get -u github.com/swaggo/swag/cmd/swag@v1.6.7
 	go generate ./...
 	swag init -g ./cmd/api/main.go -o ./docs/swagger
-	@./pkg/gateway/repositories/sqlc/config/sqlc-dev generate -f $(SQLC_CONFIG_FILE)
+	go install github.com/kyleconroy/sqlc/cmd/sqlc@v1.9.0
+	sqlc generate -f $(SQLC_CONFIG_FILE)
 	go mod tidy
 
 .PHONY: setup-dev
